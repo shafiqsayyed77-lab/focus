@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FocusFlow — Student Login</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+  <div class="auth-wrapper">
+    <div class="auth-container">
+      <div class="auth-brand-header">
+        <div class="brand-badge">
+          <div class="logo-icon">F</div>
+          <span class="brand-name">FocusFlow</span>
+        </div>
+        <h1 class="auth-title">Welcome back, Scholar</h1>
+        <p class="auth-subtitle">Log in to manage your subjects, track daily study goals, and stay productive.</p>
+      </div>
+
+      <div class="auth-card">
+        <div id="alertBox" class="alert-box" role="alert"></div>
+
+        <form id="loginForm" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="email">Student Email</label>
+            <div class="input-container">
+              <span class="input-icon">✉️</span>
+              <input 
+                type="email" 
+                id="email" 
+                class="form-input" 
+                placeholder="student@university.edu" 
+                required 
+                autocomplete="email"
+              >
+            </div>
+            <div id="emailError" class="error-text">Please enter a valid email address.</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="password">Password</label>
+            <div class="input-container">
+              <span class="input-icon">🔒</span>
+              <input 
+                type="password" 
+                id="password" 
+                class="form-input" 
+                placeholder="••••••••" 
+                required 
+                autocomplete="current-password"
+              >
+            </div>
+            <div id="passwordError" class="error-text">Password must be at least 6 characters.</div>
+          </div>
+
+          <button type="submit" id="submitBtn" class="btn-primary" style="margin-top: 1rem;">
+            <span>Sign In to FocusFlow</span>
+            <span>→</span>
+          </button>
+        </form>
+
+        <div class="demo-credentials-card">
+          <div>
+            <strong>Quick Demo Student</strong><br>
+            <span>alex.student@focusflow.edu / Student123!</span>
+          </div>
+          <button type="button" id="fillDemoBtn" class="demo-btn">Fill Demo</button>
+        </div>
+
+        <div class="auth-footer">
+          Don't have an account? <a href="/signup">Create one now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/api.js"></script>
+  <script>
+    // Client-side validation and authentication handling
+    const form = document.getElementById('loginForm');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const emailError = document.getElementById('emailError');
+    const passwordError = document.getElementById('passwordError');
+    const alertBox = document.getElementById('alertBox');
+    const submitBtn = document.getElementById('submitBtn');
+    const fillDemoBtn = document.getElementById('fillDemoBtn');
+
+    // Quick demo autofill
+    fillDemoBtn.addEventListener('click', () => {
+      emailInput.value = 'alex.student@focusflow.edu';
+      passwordInput.value = 'Student123!';
+      emailInput.classList.remove('is-invalid');
+      passwordInput.classList.remove('is-invalid');
+      emailError.classList.remove('visible');
+      passwordError.classList.remove('visible');
+    });
+
+    function showAlert(message, type = 'error') {
+      alertBox.textContent = message;
+      alertBox.className = `alert-box ${type}`;
+      alertBox.style.display = 'flex';
+    }
+
+    function clearAlert() {
+      alertBox.style.display = 'none';
+      alertBox.textContent = '';
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearAlert();
+
+      let isValid = true;
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      // Email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!email || !emailRegex.test(email)) {
+        emailInput.classList.add('is-invalid');
+        emailError.classList.add('visible');
+        isValid = false;
+      } else {
+        emailInput.classList.remove('is-invalid');
+        emailError.classList.remove('visible');
+      }
+
+      // Password validation
+      if (!password || password.length < 6) {
+        passwordInput.classList.add('is-invalid');
+        passwordError.classList.add('visible');
+        isValid = false;
+      } else {
+        passwordInput.classList.remove('is-invalid');
+        passwordError.classList.remove('visible');
+      }
+
+      if (!isValid) return;
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span>Verifying credentials...</span>';
+
+      try {
+        const response = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.detail || 'Login failed. Please check your credentials.');
+        }
+
+        showAlert('Login successful! Redirecting to your dashboard...', 'success');
+        Auth.setToken(data.token);
+        Auth.setUser(data.user);
+
+        setTimeout(() => {
+          window.location.href = '/dashboard';
+        }, 600);
+      } catch (err) {
+        showAlert(err.message, 'error');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span>Sign In to FocusFlow</span> <span>→</span>';
+      }
+    });
+
+    // Check if user is already authenticated
+    if (Auth.isAuthenticated()) {
+      window.location.href = '/dashboard';
+    }
+  </script>
+</body>
+</html>

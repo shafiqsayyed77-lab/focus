@@ -1,0 +1,16 @@
+.git
+.github
+*.png
+*.jpg
+*.jpeg
+*.log
+test_*.py
+run_selenium_test.py
+capture_app_tour.py
+__pycache__
+*.pyc
+venv/
+.venv/
+.env
+focusflow.txt
+Procfile
