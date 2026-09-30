@@ -1,0 +1,1795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FocusFlow — Plan smarter. Focus deeper. Learn better.</title>
+  <meta name="description" content="FocusFlow is the modern student productivity app with AI assistance. Decisive study planning, deep focus timers, interactive syllabus spaces, and streak tracking.">
+  <link rel="stylesheet" href="/static/css/style.css?v=20260930_genz">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+</head>
+<body>
+
+  <!-- ================= AUTHENTICATION VIEW (SPLIT SCREEN) ================= -->
+  <div id="auth-view" class="auth-split-wrapper">
+    <!-- Left Hero Pane (Desktop) -->
+    <div class="auth-hero-pane">
+      <div class="auth-hero-content">
+        <div class="auth-hero-badge">
+          <span>🚀 STUDENT PRODUCTIVITY PLATFORM</span>
+        </div>
+        <div class="auth-hero-brand">
+          <span class="auth-brand-logo">🎯</span>
+          <h1>FOCUSFLOW</h1>
+        </div>
+        <p class="auth-hero-tagline">
+          Plan smarter. Focus deeper. Learn better.
+        </p>
+
+        <div class="auth-feature-list">
+          <div class="auth-feat-item">
+            <span class="feat-icon">🔥</span>
+            <div>
+              <strong>Streak Protection</strong>
+              <p>Build disciplined daily study habits with transparent metrics.</p>
+            </div>
+          </div>
+          <div class="auth-feat-item">
+            <span class="feat-icon">🧠</span>
+            <div>
+              <strong>AI Study Assistant</strong>
+              <p>Generate time-blocked schedules, instant topic breakdowns, &amp; quizzes.</p>
+            </div>
+          </div>
+          <div class="auth-feat-item">
+            <span class="feat-icon">🎯</span>
+            <div>
+              <strong>Syllabus Mock Tests</strong>
+              <p>Simulate exam environments with real-time timers &amp; topic diagnostics.</p>
+            </div>
+          </div>
+          <div class="auth-feat-item">
+            <span class="feat-icon">⏱️</span>
+            <div>
+              <strong>Flow-State Pomodoro</strong>
+              <p>Lock in for uninterrupted deep work sprints and smart break cycles.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="auth-hero-footer">
+          <span>🔒 Student Data Scoped &amp; Securely Encrypted</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Form Pane -->
+    <div class="auth-form-pane">
+      <div class="auth-card">
+        <div class="auth-mobile-header">
+          <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 8px;">
+            <span style="font-size: 2rem;">🎯</span>
+            <span style="font-size: 1.8rem; font-weight: 900; letter-spacing: -0.03em; color: var(--text-main);">FOCUSFLOW</span>
+          </div>
+          <p style="font-size: 0.9rem; color: var(--text-muted); text-align: center;">
+            Plan smarter. Focus deeper. Learn better.
+          </p>
+        </div>
+
+        <div class="auth-tabs">
+          <button id="tab-btn-login" class="auth-tab-btn active" type="button">Sign In</button>
+          <button id="tab-btn-signup" class="auth-tab-btn" type="button">Create Account</button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="login-form">
+          <div id="login-error" style="display: none; padding: 12px 16px; background: var(--danger-subtle); color: var(--danger); border-radius: var(--radius-md); font-size: 0.88rem; font-weight: 600; margin-bottom: 16px;"></div>
+          
+          <div class="form-group">
+            <label class="form-label" for="login-email">Student Email</label>
+            <input type="email" id="login-email" required placeholder="alex@university.edu" autocomplete="email">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="login-password">Password</label>
+            <div style="position: relative;">
+              <input type="password" id="login-password" required placeholder="••••••••" autocomplete="current-password">
+              <button type="button" class="btn-toggle-password" data-target="login-password" title="Toggle password visibility">👁️</button>
+            </div>
+          </div>
+
+          <button type="submit" id="login-submit-btn" class="btn btn-primary btn-lg" style="width: 100%; margin-top: 14px;">
+            Sign In to FocusFlow →
+          </button>
+
+          <div style="margin-top: 20px; padding-top: 16px; border-top: 1px dashed var(--border-color); text-align: center;">
+            <span style="font-size: 0.78rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; color: var(--text-muted); display: block; margin-bottom: 8px;">
+              Testing or Reviewing?
+            </span>
+            <button type="button" id="btn-demo-login" class="btn btn-secondary" style="width: 100%; border: 2px dashed var(--primary-400); color: var(--primary-600); font-weight: 700; background: rgba(108, 59, 255, 0.04); display: flex; align-items: center; justify-content: center; gap: 8px;">
+              <span>⚡</span> <span>Instant 1-Click Demo Login (Alex Rivera)</span>
+            </button>
+            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">
+              Pre-loaded with BSc IT syllabus, upcoming exam, weak topics &amp; analytics
+            </div>
+          </div>
+        </form>
+
+        <!-- Signup Form -->
+        <form id="signup-form" style="display: none;">
+          <div id="signup-error" style="display: none; padding: 12px 16px; background: var(--danger-subtle); color: var(--danger); border-radius: var(--radius-md); font-size: 0.88rem; font-weight: 600; margin-bottom: 16px;"></div>
+          
+          <div class="form-group">
+            <label class="form-label" for="signup-name">Full Name</label>
+            <input type="text" id="signup-name" required placeholder="Alex Johnson" autocomplete="name">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="signup-email">Student Email</label>
+            <input type="email" id="signup-email" required placeholder="alex@university.edu" autocomplete="email">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="signup-password">Password</label>
+            <div style="position: relative;">
+              <input type="password" id="signup-password" required minlength="6" placeholder="At least 6 characters" autocomplete="new-password">
+              <button type="button" class="btn-toggle-password" data-target="signup-password" title="Toggle password visibility">👁️</button>
+            </div>
+            <div class="form-help">Minimum 6 characters.</div>
+          </div>
+
+          <button type="submit" id="signup-submit-btn" class="btn btn-accent btn-lg" style="width: 100%; margin-top: 14px;">
+            Create Free Account 🚀
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= AUTHENTICATED APP LAYOUT ================= -->
+  <div id="app-layout" style="display: none;">
+    
+    <!-- Sidebar Navigation (Desktop) -->
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-icon">🎯</div>
+        <div>
+          <span class="brand-title">FocusFlow</span>
+          <span class="brand-badge">Student</span>
+        </div>
+      </div>
+
+      <ul class="nav-links">
+        <li class="nav-item active" data-route="dashboard">
+          <button type="button">
+            <span class="nav-icon">⌂</span>
+            <span>Dashboard</span>
+          </button>
+        </li>
+        <li class="nav-item" data-route="subjects">
+          <button type="button">
+            <span class="nav-icon">📚</span>
+            <span>Subjects &amp; Roadmap</span>
+          </button>
+        </li>
+        <li class="nav-item" data-route="planner">
+          <button type="button">
+            <span class="nav-icon">📅</span>
+            <span>Planner</span>
+          </button>
+        </li>
+        <li class="nav-item" data-route="exams">
+          <button type="button">
+            <span class="nav-icon">🏆</span>
+            <span>Exam Prep</span>
+          </button>
+        </li>
+        <li class="nav-item" data-route="revision">
+          <button type="button">
+            <span class="nav-icon">🔄</span>
+            <span>Revision</span>
+          </button>
+        </li>
+        <li class="nav-item" data-route="mocktest">
+          <button type="button">
+            <span class="nav-icon">🎯</span>
+            <span>Mock Tests</span>
+          </button>
+        </li>
+        <li class="nav-item" data-route="timer">
+          <button type="button">
+            <span class="nav-icon">⏱️</span>
+            <span>Focus Timer</span>
+          </button>
+        </li>
+        <li class="nav-item" data-route="ai">
+          <button type="button">
+            <span class="nav-icon">🧠</span>
+            <span>AI Coach</span>
+          </button>
+        </li>
+        <li class="nav-item" data-route="analytics">
+          <button type="button">
+            <span class="nav-icon">📊</span>
+            <span>Analytics</span>
+          </button>
+        </li>
+        <li class="nav-item" data-route="resources">
+          <button type="button">
+            <span class="nav-icon">📑</span>
+            <span>Resources &amp; Notes</span>
+          </button>
+        </li>
+        <li class="nav-item" data-route="profile">
+          <button type="button">
+            <span class="nav-icon">👤</span>
+            <span>Profile</span>
+          </button>
+        </li>
+        <li class="nav-item" data-route="settings">
+          <button type="button">
+            <span class="nav-icon">⚙️</span>
+            <span>Settings</span>
+          </button>
+        </li>
+        <li class="nav-item">
+          <button type="button" class="action-logout" style="color: var(--danger);">
+            <span class="nav-icon">🚪</span>
+            <span>Logout</span>
+          </button>
+        </li>
+      </ul>
+
+      <!-- User Profile Snippet & Logout -->
+      <div class="sidebar-footer">
+        <div class="user-snippet">
+          <div class="user-avatar" id="user-avatar">U</div>
+          <div class="user-info">
+            <div class="name" id="user-display-name">Student Name</div>
+            <div class="email" id="user-display-email">student@email.com</div>
+          </div>
+          <button class="logout-btn action-logout" title="Sign Out">
+            🚪
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-wrapper">
+      
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="page-heading">
+          <button class="mobile-toggle" id="mobile-toggle-btn" aria-label="Toggle menu">☰</button>
+          <h2 class="page-title" id="current-page-title">Student Dashboard</h2>
+        </div>
+
+        <div class="topbar-actions" style="display: flex; align-items: center; gap: 10px;">
+          <!-- Global Search trigger button -->
+          <button class="topbar-search-btn" id="btn-header-search" title="Search subjects, topics, tasks, formulas (Shortcut: /)">
+            <span>🔍</span> <span>Search</span> <kbd>/</kbd>
+          </button>
+
+          <!-- Quick Capture button -->
+          <button class="btn btn-accent btn-sm" id="btn-quick-add" title="Quickly add a Task, Topic, Note, or Exam">
+            <span>⚡ + Add</span>
+          </button>
+
+          <div class="streak-pill" id="topbar-streak">
+            🔥 0 Day Streak
+          </div>
+
+          <button class="theme-toggle-btn" id="btn-quick-theme-toggle" title="Toggle Light/Dark Theme">
+            <span id="theme-toggle-icon">🌙</span>
+          </button>
+
+          <button class="btn btn-sm btn-secondary action-logout" title="Logout">
+            Logout
+          </button>
+        </div>
+      </header>
+
+      <!-- Content Area -->
+      <main class="content-area">
+
+        <!-- ================= VIEW 1: HERO DASHBOARD ================= -->
+        <section id="view-dashboard" class="view-section active">
+          <!-- Top Section Greeting -->
+          <div class="dash-hero-header">
+            <div>
+              <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <h1 class="dash-hero-name" id="dash-welcome-name">Hey, Student 👋</h1>
+                <span class="badge" id="dash-welcome-course" style="background: rgba(108, 59, 255, 0.12); color: var(--primary-600); font-weight: 800; font-size: 0.8rem;">
+                  🎓 Academic Workspace
+                </span>
+              </div>
+              <p class="dash-hero-msg" id="dash-welcome-msg" style="font-size: 1.15rem; font-weight: 700; color: var(--primary-500); margin-top: 4px;">
+                Ready to lock in? Let's make today count.
+              </p>
+            </div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <button class="btn btn-secondary" onclick="Router.navigate('planner')">
+                📅 Plan My Day
+              </button>
+              <button class="btn btn-accent btn-lg" onclick="Router.navigate('timer')">
+                ⚡ Lock In Now
+              </button>
+            </div>
+          </div>
+
+          <!-- AI Recommended Next Action Banner -->
+          <div id="dash-ai-recommendation-banner" style="display: none;"></div>
+
+          <!-- Gen-Z Quick Action Cards Grid -->
+          <div class="quick-actions-grid">
+            <div class="action-card" onclick="Router.navigate('timer')">
+              <div class="action-card-icon" style="background: rgba(108, 59, 255, 0.15); color: #6C3BFF;">⚡</div>
+              <div class="action-card-text">
+                <span class="action-title">Focus</span>
+                <span class="action-desc">Start timer</span>
+              </div>
+            </div>
+
+            <div class="action-card" onclick="Router.navigate('subjects')">
+              <div class="action-card-icon" style="background: rgba(139, 92, 246, 0.15); color: #8B5CF6;">📚</div>
+              <div class="action-card-text">
+                <span class="action-title">Roadmap</span>
+                <span class="action-desc">Syllabus spaces</span>
+              </div>
+            </div>
+
+            <div class="action-card" onclick="Router.navigate('planner')">
+              <div class="action-card-icon" style="background: rgba(16, 185, 129, 0.15); color: #10B981;">📅</div>
+              <div class="action-card-text">
+                <span class="action-title">Planner</span>
+                <span class="action-desc">Schedule &amp; tasks</span>
+              </div>
+            </div>
+
+            <div class="action-card" onclick="Router.navigate('exams')">
+              <div class="action-card-icon" style="background: rgba(236, 72, 153, 0.15); color: #EC4899;">🏆</div>
+              <div class="action-card-text">
+                <span class="action-title">Exam Prep</span>
+                <span class="action-desc">Readiness roadmaps</span>
+              </div>
+            </div>
+
+            <div class="action-card" onclick="Router.navigate('revision')">
+              <div class="action-card-icon" style="background: rgba(255, 159, 67, 0.15); color: #FF9F43;">🔄</div>
+              <div class="action-card-text">
+                <span class="action-title">Revision</span>
+                <span class="action-desc">Spaced retention</span>
+              </div>
+            </div>
+
+            <div class="action-card" onclick="Router.navigate('mocktest')">
+              <div class="action-card-icon" style="background: rgba(255, 107, 107, 0.15); color: #FF6B6B;">🎯</div>
+              <div class="action-card-text">
+                <span class="action-title">Mock Test</span>
+                <span class="action-desc">Exam simulation</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Weak Topics Alert Banner -->
+          <div id="dash-weak-alert" style="display: none; margin-bottom: 24px;"></div>
+
+          <!-- Today's Focus Card & Overall Progress Grid -->
+          <div class="dash-hero-grid">
+            <!-- Large "Today's Focus" Card -->
+            <div class="card today-focus-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <span class="dash-card-tag">TODAY'S FOCUS</span>
+                <span class="dash-goal-target">Goal: 60 min</span>
+              </div>
+
+              <div class="focus-stat-row">
+                <span class="focus-stat-num" id="dash-focus-count">🔥 0 / 60 min</span>
+              </div>
+
+              <div class="progress-bar-bg" style="height: 12px; margin: 16px 0 10px 0;">
+                <div class="progress-bar-fill" id="dash-focus-bar" style="width: 0%; background: linear-gradient(90deg, #6C3BFF, #FF6B6B);"></div>
+              </div>
+
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-top: 14px;">
+                <span class="focus-sub-text" id="dash-focus-sub">60 minutes to hit your goal</span>
+                <button class="btn btn-primary" onclick="Router.navigate('timer')">
+                  Start Focus →
+                </button>
+              </div>
+            </div>
+
+            <!-- Overall Academic Progress Card -->
+            <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                  <span class="dash-card-tag" style="color: var(--primary-500);">OVERALL ACADEMIC PROGRESS</span>
+                  <span class="badge" id="dash-overall-pct" style="background: rgba(108, 59, 255, 0.15); color: var(--primary-600); font-weight: 800; font-size: 0.9rem;">
+                    0%
+                  </span>
+                </div>
+                <div style="font-size: 1.15rem; font-weight: 800; margin-bottom: 6px;">Syllabus Completion</div>
+                <div class="progress-bar-bg" style="height: 12px; margin: 10px 0;">
+                  <div class="progress-bar-fill" id="dash-overall-bar" style="width: 0%; background: linear-gradient(90deg, #8B5CF6, #10B981);"></div>
+                </div>
+                <div style="font-size: 0.85rem; color: var(--text-muted);" id="dash-overall-sub">
+                  0 of 0 syllabus topics completed
+                </div>
+              </div>
+              <div style="margin-top: 16px;">
+                <button class="btn btn-secondary" onclick="Router.navigate('subjects')" style="width: 100%;">
+                  Open Study Roadmap →
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 Stats Cards: Streak, Study Time, Tasks Completed, Upcoming Exams -->
+          <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom: 24px;">
+            <div class="card stat-card">
+              <div class="stat-icon coral">🔥</div>
+              <div class="stat-content">
+                <div class="stat-label">Current Streak</div>
+                <div class="stat-value" id="dash-current-streak">0 days</div>
+              </div>
+            </div>
+
+            <div class="card stat-card">
+              <div class="stat-icon purple">⏱</div>
+              <div class="stat-content">
+                <div class="stat-label">Today's Study Time</div>
+                <div class="stat-value" id="dash-today-studytime">0 min</div>
+              </div>
+            </div>
+
+            <div class="card stat-card">
+              <div class="stat-icon emerald">✓</div>
+              <div class="stat-content">
+                <div class="stat-label">Tasks Completed</div>
+                <div class="stat-value" id="dash-completed-tasks">0</div>
+              </div>
+            </div>
+
+            <div class="card stat-card">
+              <div class="stat-icon violet">🏆</div>
+              <div class="stat-content">
+                <div class="stat-label">Upcoming Exams</div>
+                <div class="stat-value" id="dash-upcoming-exams-count">0 Exams</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Continue Learning Card & Upcoming Exams Row -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-bottom: 24px;">
+            <!-- Continue Learning Card -->
+            <div class="card continue-learning-card" id="dash-continue-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <span class="dash-card-tag" style="color: var(--primary-400);">CONTINUE LEARNING</span>
+                <span class="badge" style="background: rgba(108, 59, 255, 0.15); color: var(--primary-500); font-weight: 800;">
+                  ACTIVE 🚀
+                </span>
+              </div>
+
+              <div id="dash-continue-content">
+                <div style="font-size: 1.25rem; font-weight: 800; margin-bottom: 4px;" id="dash-continue-subject">
+                  Loading subject...
+                </div>
+                <div style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 14px;" id="dash-continue-topics">
+                  0 / 0 topics completed
+                </div>
+                <div class="progress-bar-bg" style="height: 10px; margin-bottom: 18px;">
+                  <div class="progress-bar-fill" id="dash-continue-bar" style="width: 0%; background: linear-gradient(90deg, #8B5CF6, #FF9F43);"></div>
+                </div>
+                <button class="btn btn-secondary btn-lg" id="dash-continue-btn" onclick="Router.navigate('subjects')">
+                  Continue Learning →
+                </button>
+              </div>
+            </div>
+
+            <!-- Upcoming Exams Widget -->
+            <div class="card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                <span class="dash-card-tag" style="color: var(--accent-coral);">UPCOMING EXAMS</span>
+                <a href="javascript:void(0)" onclick="Router.navigate('exams')" style="font-size: 0.82rem; color: var(--primary-600); font-weight: 700;">View All →</a>
+              </div>
+              <div id="dash-exams-widget">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+          </div>
+
+          <!-- 7-Day Streak Visualizer -->
+          <div class="card streak-hero-card" style="margin-bottom: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+              <span class="dash-card-tag" style="color: var(--accent-orange);">WEEKLY STUDY STREAK</span>
+              <span style="font-size: 0.85rem; color: var(--text-muted);">Daily lock-in habit</span>
+            </div>
+            <div class="streak-week-track" id="dash-streak-week">
+              <!-- Populated dynamically: Mon-Sun with checkmarks and glowing active ring -->
+            </div>
+          </div>
+
+          <!-- Today's Tasks List -->
+          <div class="card">
+            <div class="section-header">
+              <div>
+                <h3 class="section-title">Today's Tasks &amp; Schedule</h3>
+                <p style="font-size: 0.85rem; color: var(--text-muted);">Manage your to-do items and launch focused deep-work sprints</p>
+              </div>
+              <button class="btn btn-sm btn-secondary" onclick="Router.navigate('planner')">
+                View Planner →
+              </button>
+            </div>
+
+            <div class="task-list" id="dash-pending-tasks-list">
+              <!-- Dynamically Populated -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= VIEW 2: SUBJECTS & STUDY ROADMAP ================= -->
+        <section id="view-subjects" class="view-section">
+          <!-- Main Subjects Grid View -->
+          <div id="subjects-main-view">
+            <div class="section-header">
+              <div>
+                <h3 class="section-title">Academic Subjects &amp; Study Roadmaps</h3>
+                <p style="font-size: 0.88rem; color: var(--text-muted);">
+                  Interactive syllabus spaces with chapter tracking, AI breakdown, notes &amp; mock tests
+                </p>
+              </div>
+              <button class="btn btn-primary" id="btn-add-subject">
+                + Add Subject
+              </button>
+            </div>
+
+            <div class="subjects-grid" id="subjects-container">
+              <!-- Dynamically populated with rich subject cards -->
+            </div>
+          </div>
+
+          <!-- Subject Detail (Mini Learning Space & Roadmap) View -->
+          <div id="subject-detail-view" style="display: none;">
+            <!-- Dynamically populated when student clicks 'Continue →' on a subject card -->
+          </div>
+        </section>
+
+        <!-- ================= VIEW 3: SMART PLANNER & CALENDAR ================= -->
+        <section id="view-planner" class="view-section">
+          <div class="section-header">
+            <div>
+              <h3 class="section-title">Academic Daily Planner &amp; Schedule</h3>
+              <p style="font-size: 0.88rem; color: var(--text-muted);">Time-block your study sessions, track assignments, and let AI optimize your day</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <button class="btn btn-secondary" id="btn-open-plan-day">
+                ⚡ Plan My Day
+              </button>
+              <button class="btn btn-primary" id="btn-add-planner-item">
+                + Add Item
+              </button>
+            </div>
+          </div>
+
+          <!-- Filter Bar -->
+          <div class="card" style="padding: 16px 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+            <div class="task-filters-group">
+              <button class="btn btn-sm btn-secondary planner-filter-tab active" data-filter="all">All Items</button>
+              <button class="btn btn-sm btn-secondary planner-filter-tab" data-filter="task">📝 Tasks</button>
+              <button class="btn btn-sm btn-secondary planner-filter-tab" data-filter="assignment">📑 Assignments</button>
+              <button class="btn btn-sm btn-secondary planner-filter-tab" data-filter="exam">🎯 Exams</button>
+              <button class="btn btn-sm btn-secondary planner-filter-tab" data-filter="project">💻 Projects</button>
+              <button class="btn btn-sm btn-secondary planner-filter-tab" data-filter="revision">🔄 Revision</button>
+              <button class="btn btn-sm btn-secondary planner-filter-tab" data-filter="completed">✓ Completed</button>
+            </div>
+
+            <div>
+              <select id="planner-filter-subject" style="width: auto; min-width: 170px; padding: 6px 12px; font-size: 0.85rem;">
+                <option value="">All Subjects</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Items Container -->
+          <div id="planner-items-container">
+            <!-- Dynamically populated -->
+          </div>
+        </section>
+
+        <!-- ================= VIEW 4: EXAM PREPARATION MODE ================= -->
+        <section id="view-exams" class="view-section">
+          <div class="section-header">
+            <div>
+              <h3 class="section-title">Exam Preparation Spaces</h3>
+              <p style="font-size: 0.88rem; color: var(--text-muted);">
+                Days remaining, syllabus readiness %, and customized day-by-day study roadmaps
+              </p>
+            </div>
+            <button class="btn btn-primary" id="btn-add-exam">
+              + Schedule Exam
+            </button>
+          </div>
+
+          <div id="exams-list-container">
+            <!-- Dynamically populated -->
+          </div>
+        </section>
+
+        <!-- ================= VIEW 5: SMART REVISION ENGINE ================= -->
+        <section id="view-revision" class="view-section">
+          <div class="section-header">
+            <div>
+              <h3 class="section-title">Smart Revision Engine</h3>
+              <p style="font-size: 0.88rem; color: var(--text-muted);">
+                Automated spaced repetition collecting weak mock-test topics, decay intervals, and review flags
+              </p>
+            </div>
+          </div>
+
+          <div id="revision-queue-container">
+            <!-- Dynamically populated -->
+          </div>
+        </section>
+
+        <!-- ================= VIEW 6: MOCK TEST & EXAMINATION ================= -->
+        <section id="view-mocktest" class="view-section">
+          <div id="mocktest-container">
+            <!-- Launcher Card or Active Test rendered by mock_test.js -->
+          </div>
+        </section>
+
+        <!-- ================= VIEW 7: FLOW-STATE FOCUS TIMER ================= -->
+        <section id="view-timer" class="view-section">
+          <div class="card timer-container">
+            
+            <!-- Break Banner (Shows after session finishes) -->
+            <div class="break-banner" id="timer-break-banner" style="display: none;">
+              <!-- Dynamic celebration content -->
+            </div>
+
+            <!-- Subject & Task Selector -->
+            <div class="timer-task-selector">
+              <select id="timer-task-select">
+                <option value="">-- No specific task (General Study) --</option>
+              </select>
+            </div>
+
+            <!-- Preset Durations -->
+            <div class="preset-durations">
+              <button class="duration-pill" data-mins="15">15 min</button>
+              <button class="duration-pill active" data-mins="25">25 min</button>
+              <button class="duration-pill" data-mins="30">30 min</button>
+              <button class="duration-pill" data-mins="45">45 min</button>
+              <button class="duration-pill" data-mins="60">60 min</button>
+            </div>
+
+            <!-- Circular SVG Timer -->
+            <div class="timer-circle-wrapper">
+              <svg class="timer-svg" viewBox="0 0 240 240">
+                <defs>
+                  <linearGradient id="timerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#7C3AED" />
+                    <stop offset="100%" stop-color="#FF6B4A" />
+                  </linearGradient>
+                </defs>
+                <circle class="timer-bg-circle" cx="120" cy="120" r="110" />
+                <circle class="timer-progress-circle" id="timer-progress-ring" cx="120" cy="120" r="110" />
+              </svg>
+
+              <div class="timer-text-content">
+                <div class="timer-display" id="timer-display">25:00</div>
+                <div class="timer-mode-label" id="timer-mode-label">LOCKED IN 🔥</div>
+              </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="timer-controls">
+              <button class="btn btn-primary btn-lg" id="btn-timer-start">▶ Start</button>
+              <button class="btn btn-primary btn-lg" id="btn-timer-pause" style="display: none;">⏸ Pause</button>
+              <button class="btn btn-primary btn-lg" id="btn-timer-resume" style="display: none;">▶ Resume</button>
+              <button class="btn btn-secondary btn-lg" id="btn-timer-reset" disabled>↺ Reset</button>
+              <button class="btn btn-danger btn-lg" id="btn-timer-end" disabled>⏹ End Session</button>
+            </div>
+
+            <!-- Active Task Info -->
+            <div class="timer-active-info">
+              <span>📖 Subject: <strong id="timer-active-subject-name">All Subjects</strong></span>
+              <span>•</span>
+              <span>🎯 Task: <strong id="timer-active-task-name">General Study</strong></span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= VIEW 8: AI ACADEMIC COACH ================= -->
+        <section id="view-ai" class="view-section">
+          <!-- Gen-Z Feature Cards Selection -->
+          <div class="ai-feature-cards-grid">
+            <div class="card ai-feature-card active" data-tab="planner">
+              <div class="ai-feat-icon">🧠</div>
+              <h4>Study Planner</h4>
+              <p>"Build my study plan"</p>
+            </div>
+
+            <div class="card ai-feature-card" data-tab="explain">
+              <div class="ai-feat-icon">📖</div>
+              <h4>Concept Explainer</h4>
+              <p>"Break down a topic"</p>
+            </div>
+
+            <div class="card ai-feature-card" data-tab="quiz">
+              <div class="ai-feat-icon">❓</div>
+              <h4>Practice Quiz</h4>
+              <p>"Test my knowledge"</p>
+            </div>
+
+            <div class="card ai-feature-card" data-tab="diagram">
+              <div class="ai-feat-icon">💡</div>
+              <h4>Visual Diagram</h4>
+              <p>"Explain visually"</p>
+            </div>
+
+            <div class="card ai-feature-card" data-tab="viva">
+              <div class="ai-feat-icon">🎤</div>
+              <h4>Viva Voce</h4>
+              <p>"Prepare me for viva"</p>
+            </div>
+          </div>
+
+          <!-- Panel 1: Study Planner -->
+          <div class="ai-feature-panel active" id="ai-panel-planner">
+            <div class="card">
+              <div style="margin-bottom: 20px;">
+                <h3 style="font-size: 1.25rem; font-weight: 800;">Generate an Actionable Study Plan</h3>
+                <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 4px;">
+                  Tell the AI what topics you need to cover and how much energy and time you have. It builds a realistic, time-blocked session plan with revision intervals!
+                </p>
+              </div>
+
+              <form id="form-ai-planner">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px;">
+                  <div class="form-group">
+                    <label class="form-label" for="ai-planner-subject">Subject</label>
+                    <select id="ai-planner-subject" required>
+                      <!-- Populated with subjects -->
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="ai-planner-energy">Energy Level</label>
+                    <select id="ai-planner-energy">
+                      <option value="Normal">Normal — Standard Pomodoro</option>
+                      <option value="Low">Low — Gentle pace &amp; review</option>
+                      <option value="Good">Good — Solid active problem solving</option>
+                      <option value="Highly Focused">Highly Focused — Intense deep work</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="ai-planner-priority">Priority</label>
+                    <select id="ai-planner-priority">
+                      <option value="High">High Priority</option>
+                      <option value="Medium" selected>Medium Priority</option>
+                      <option value="Low">Low Priority</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="ai-planner-topics">Topics to Cover (comma or newline separated)</label>
+                  <textarea id="ai-planner-topics" rows="3" required placeholder="e.g. IPv4 addressing, ARP protocol, Subnetting, IPv6 header"></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Available Study Time</label>
+                  <input type="hidden" id="ai-planner-time" value="60">
+                  <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <button type="button" class="duration-pill ai-time-pill" data-mins="30">30 mins</button>
+                    <button type="button" class="duration-pill ai-time-pill" data-mins="45">45 mins</button>
+                    <button type="button" class="duration-pill ai-time-pill active" data-mins="60">60 mins</button>
+                    <button type="button" class="duration-pill ai-time-pill" data-mins="90">90 mins</button>
+                    <button type="button" class="duration-pill ai-time-pill" data-mins="120">120 mins</button>
+                  </div>
+                </div>
+
+                <button type="submit" id="btn-generate-plan" class="btn btn-primary btn-lg" style="margin-top: 10px;">
+                  ✨ Generate Study Plan
+                </button>
+              </form>
+            </div>
+
+            <div id="ai-planner-result"></div>
+          </div>
+
+          <!-- Panel 2: AI Explain -->
+          <div class="ai-feature-panel" id="ai-panel-explain">
+            <div class="card">
+              <div style="margin-bottom: 20px;">
+                <h3 style="font-size: 1.25rem; font-weight: 800;">Student-Friendly Concept Explainer</h3>
+                <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 4px;">
+                  Confused by a tough concept? Enter the topic name and get a crystal-clear explanation, key takeaways, and memorable real-world examples!
+                </p>
+              </div>
+
+              <form id="form-ai-explain">
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 16px;">
+                  <div class="form-group">
+                    <label class="form-label" for="ai-explain-topic">Topic or Term</label>
+                    <input type="text" id="ai-explain-topic" required placeholder="e.g. Database Normalization (3NF) or ARP Protocol">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="ai-explain-subject">Subject Context (Optional)</label>
+                    <select id="ai-explain-subject">
+                      <!-- Populated with subjects -->
+                    </select>
+                  </div>
+                </div>
+
+                <button type="submit" id="btn-explain-topic" class="btn btn-primary btn-lg" style="margin-top: 6px;">
+                  💡 Explain Clearly
+                </button>
+              </form>
+            </div>
+
+            <div id="ai-explain-result"></div>
+          </div>
+
+          <!-- Panel 3: AI Practice Quiz -->
+          <div class="ai-feature-panel" id="ai-panel-quiz">
+            <div class="card">
+              <div style="margin-bottom: 20px;">
+                <h3 style="font-size: 1.25rem; font-weight: 800;">Interactive Practice MCQs</h3>
+                <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 4px;">
+                  Generate targeted multiple choice questions to test your comprehension with instant visual feedback and answer explanations.
+                </p>
+              </div>
+
+              <form id="form-ai-quiz">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                  <div class="form-group">
+                    <label class="form-label" for="ai-quiz-subject">Subject</label>
+                    <select id="ai-quiz-subject">
+                      <!-- Populated -->
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="ai-quiz-topic">Topic</label>
+                    <input type="text" id="ai-quiz-topic" required placeholder="e.g. IPv4 Addressing or SQL Joins">
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="ai-quiz-count">Number of Questions</label>
+                    <select id="ai-quiz-count">
+                      <option value="3" selected>3 Questions</option>
+                      <option value="5">5 Questions</option>
+                    </select>
+                  </div>
+                </div>
+
+                <button type="submit" id="btn-generate-quiz" class="btn btn-accent btn-lg" style="margin-top: 6px;">
+                  📝 Generate Interactive Quiz
+                </button>
+              </form>
+            </div>
+
+            <div id="ai-quiz-result"></div>
+          </div>
+
+          <!-- Panel 4: AI Diagram -->
+          <div class="ai-feature-panel" id="ai-panel-diagram">
+            <div class="card">
+              <div style="margin-bottom: 20px;">
+                <h3 style="font-size: 1.25rem; font-weight: 800;">Visual Concept &amp; Flow Breakdown</h3>
+                <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 4px;">
+                  Understand complex protocols, lifecycles, and architectural flows through clear step-by-step visual models.
+                </p>
+              </div>
+
+              <form id="form-ai-diagram">
+                <div class="form-group">
+                  <label class="form-label" for="ai-diagram-topic">Architecture / Protocol / Flow</label>
+                  <input type="text" id="ai-diagram-topic" required placeholder="e.g. TCP 3-Way Handshake or 2-Phase Commit Protocol">
+                </div>
+                <button type="submit" id="btn-diagram-submit" class="btn btn-primary btn-lg" style="margin-top: 6px;">
+                  🗺️ Generate Visual Map
+                </button>
+              </form>
+            </div>
+            <div id="ai-diagram-result"></div>
+          </div>
+
+          <!-- Panel 5: AI Viva Voce Prep -->
+          <div class="ai-feature-panel" id="ai-panel-viva">
+            <div class="card">
+              <div style="margin-bottom: 20px;">
+                <h3 style="font-size: 1.25rem; font-weight: 800;">Viva Voce &amp; Oral Exam Preparation</h3>
+                <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 4px;">
+                  Get grilled on the exact technical questions university examiners ask during practical evaluations.
+                </p>
+              </div>
+
+              <form id="form-ai-viva">
+                <div class="form-group">
+                  <label class="form-label" for="ai-viva-topic">Project Topic or Course Module</label>
+                  <input type="text" id="ai-viva-topic" required placeholder="e.g. Raft Consensus Algorithm or Database Indexing">
+                </div>
+                <button type="submit" id="btn-viva-submit" class="btn btn-accent btn-lg" style="margin-top: 6px;">
+                  🎤 Generate Viva Questions &amp; Model Answers
+                </button>
+              </form>
+            </div>
+            <div id="ai-viva-result"></div>
+          </div>
+        </section>
+
+        <!-- ================= VIEW 9: ANALYTICS & ACHIEVEMENTS ================= -->
+        <section id="view-analytics" class="view-section">
+          <!-- Hero Section: Total Focus Time -->
+          <div class="card progress-hero-card">
+            <div>
+              <span class="dash-card-tag" style="color: var(--primary-200);">ACADEMIC ANALYTICS</span>
+              <h2 style="font-size: 1.8rem; font-weight: 800; margin-top: 4px; color: #fff;">
+                YOUR LEARNING JOURNEY 📈
+              </h2>
+            </div>
+            <div class="prog-hero-stat-badge">
+              <span class="prog-hero-hours-val" id="prog-hero-hours">0 min</span>
+              <span class="prog-hero-hours-lbl">Total Focus Time</span>
+            </div>
+          </div>
+
+          <!-- 6-Card Analytics Grid -->
+          <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom: 24px;">
+            <div class="card stat-card">
+              <div class="stat-icon purple">⏱</div>
+              <div class="stat-content">
+                <div class="stat-label">Today's Study Time</div>
+                <div class="stat-value" id="prog-today-mins">0 min</div>
+              </div>
+            </div>
+
+            <div class="card stat-card">
+              <div class="stat-icon violet">⏳</div>
+              <div class="stat-content">
+                <div class="stat-label">Total Study Time</div>
+                <div class="stat-value" id="prog-total-mins">0 min</div>
+              </div>
+            </div>
+
+            <div class="card stat-card">
+              <div class="stat-icon emerald">✓</div>
+              <div class="stat-content">
+                <div class="stat-label">Completed Tasks</div>
+                <div class="stat-value" id="prog-completed-tasks">0</div>
+              </div>
+            </div>
+
+            <div class="card stat-card">
+              <div class="stat-icon amber">🎯</div>
+              <div class="stat-content">
+                <div class="stat-label">Focus Sessions</div>
+                <div class="stat-value" id="prog-completed-sessions">0</div>
+              </div>
+            </div>
+
+            <div class="card stat-card">
+              <div class="stat-icon coral">🔥</div>
+              <div class="stat-content">
+                <div class="stat-label">Current Streak</div>
+                <div class="stat-value" id="prog-current-streak">0 days</div>
+              </div>
+            </div>
+
+            <div class="card stat-card">
+              <div class="stat-icon orange">⚡</div>
+              <div class="stat-content">
+                <div class="stat-label">Longest Streak</div>
+                <div class="stat-value" id="prog-longest-streak">0 days</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Weekly Chart -->
+          <div class="card" style="margin-bottom: 28px;">
+            <div class="section-header">
+              <div>
+                <h3 class="section-title">Weekly Study-Time Activity</h3>
+                <p style="font-size: 0.82rem; color: var(--text-muted);">Minutes focused over the last 7 days</p>
+              </div>
+            </div>
+            <div class="chart-container">
+              <canvas id="weekly-chart-canvas"></canvas>
+            </div>
+          </div>
+
+          <!-- Subject Distribution & Academic Insights Row -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-bottom: 28px;">
+            <!-- Subject-Wise Study Time -->
+            <div class="card">
+              <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 4px;">⏱ Subject Study Distribution</h3>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 16px;">Real time spent across your syllabus</p>
+              <div id="prog-subject-times"></div>
+            </div>
+
+            <!-- Academic Productivity Insights -->
+            <div class="card">
+              <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 4px;">💡 Productivity Insights</h3>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 16px;">Derived from your actual study patterns</p>
+              
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="padding: 12px 14px; background: var(--bg-muted); border-radius: var(--radius-sm);">
+                  <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted);">Most Productive Day</div>
+                  <div style="font-size: 1.1rem; font-weight: 800; color: var(--primary-600); margin-top: 2px;" id="prog-productive-day">Analyzing...</div>
+                </div>
+
+                <div style="padding: 12px 14px; background: var(--bg-muted); border-radius: var(--radius-sm);">
+                  <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted);">Subject Needing Most Attention</div>
+                  <div style="font-size: 1.1rem; font-weight: 800; color: var(--danger); margin-top: 2px;" id="prog-attention-subject">Analyzing...</div>
+                </div>
+
+                <div style="padding: 12px 14px; background: var(--bg-muted); border-radius: var(--radius-sm);">
+                  <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted);">Average Mock-Test Score</div>
+                  <div style="font-size: 1.1rem; font-weight: 800; color: var(--success); margin-top: 2px;" id="prog-avg-mock-score">Analyzing...</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Weak vs Strong Topics Grid -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 28px;">
+            <!-- Strong Topics -->
+            <div class="card">
+              <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 4px;">🏆 Mastered Strong Topics</h3>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 16px;">Syllabus areas you've nailed in practice</p>
+              <div id="prog-strong-topics"></div>
+            </div>
+
+            <!-- Weak Topics -->
+            <div class="card">
+              <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 4px;">⚠️ Weak Topics for Revision</h3>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 16px;">Topics flagged from mock tests requiring review</p>
+              <div id="prog-weak-topics"></div>
+            </div>
+          </div>
+
+          <!-- Student Achievements -->
+          <div class="card" style="margin-bottom: 28px;">
+            <div class="section-header">
+              <div>
+                <h3 class="section-title">Student Achievements &amp; Badges</h3>
+                <p style="font-size: 0.82rem; color: var(--text-muted);">Milestones unlocked automatically by your real focus sessions and test scores</p>
+              </div>
+            </div>
+            <div class="stats-grid" id="prog-achievements-grid" style="grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px;">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Recent Focus Sessions -->
+          <div class="card">
+            <div class="section-header">
+              <h3 class="section-title">Recent Completed Focus Sessions</h3>
+            </div>
+            <div id="prog-sessions-list">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= VIEW 10: RESOURCES & NOTES ================= -->
+        <section id="view-resources" class="view-section">
+          <div class="section-header">
+            <div>
+              <h3 class="section-title">Resources &amp; Notes Library</h3>
+              <p style="font-size: 0.88rem; color: var(--text-muted);">Save formulas, cheat-sheets, reference links, and lecture notes organized by subject</p>
+            </div>
+            <button class="btn btn-primary" id="btn-add-resource">
+              + Add Resource / Note
+            </button>
+          </div>
+
+          <!-- Filter Bar -->
+          <div class="card" style="padding: 16px 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+            <div class="task-filters-group">
+              <button class="btn btn-sm btn-secondary resource-filter-tab active" data-filter="all">All</button>
+              <button class="btn btn-sm btn-secondary resource-filter-tab" data-filter="note">📝 Notes</button>
+              <button class="btn btn-sm btn-secondary resource-filter-tab" data-filter="formula">📐 Formulas</button>
+              <button class="btn btn-sm btn-secondary resource-filter-tab" data-filter="link">🔗 Links</button>
+              <button class="btn btn-sm btn-secondary resource-filter-tab" data-filter="reminder">⏰ Reminders</button>
+            </div>
+
+            <div>
+              <select id="resource-filter-subject" style="width: auto; min-width: 170px; padding: 6px 12px; font-size: 0.85rem;">
+                <option value="">All Subjects</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="resources-grid-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px;">
+            <!-- Dynamically populated -->
+          </div>
+        </section>
+
+        <!-- ================= VIEW 11: PROFILE ================= -->
+        <section id="view-profile" class="view-section">
+          <div style="max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px;">
+            <div class="card">
+              <h3 class="section-title" style="margin-bottom: 4px;">Academic Profile</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;" id="profile-created-display">Member</p>
+
+              <form id="form-profile">
+                <div class="form-group">
+                  <label class="form-label" for="profile-name-input">Full Name</label>
+                  <input type="text" id="profile-name-input" required minlength="2">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="profile-email-display">Registered Email</label>
+                  <input type="email" id="profile-email-display" readonly disabled style="opacity: 0.7; cursor: not-allowed;">
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="margin-top: 10px;">
+                  Save Profile Changes
+                </button>
+              </form>
+            </div>
+
+            <div class="card">
+              <h3 class="section-title" style="margin-bottom: 4px;">Change Password</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;">Keep your student account secure</p>
+
+              <form id="form-password">
+                <div class="form-group">
+                  <label class="form-label" for="pass-current">Current Password</label>
+                  <input type="password" id="pass-current" required autocomplete="current-password">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="pass-new">New Password</label>
+                  <input type="password" id="pass-new" required minlength="6" autocomplete="new-password">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="pass-confirm">Confirm New Password</label>
+                  <input type="password" id="pass-confirm" required minlength="6" autocomplete="new-password">
+                </div>
+
+                <button type="submit" class="btn btn-secondary" style="margin-top: 10px;">
+                  Update Password
+                </button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= VIEW 12: SETTINGS ================= -->
+        <section id="view-settings" class="view-section">
+          <div style="max-width: 600px; margin: 0 auto;">
+            <div class="card">
+              <h3 class="section-title" style="margin-bottom: 6px;">Application Preferences</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 24px;">Customize timer defaults and visual appearance</p>
+
+              <form id="form-settings">
+                <div class="form-group">
+                  <label class="form-label" for="settings-theme">Color Theme</label>
+                  <select id="settings-theme">
+                    <option value="light">Soft Off-White (Light Mode)</option>
+                    <option value="dark">Deep Midnight (Dark Mode)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="settings-focus-duration">Default Focus Session Duration</label>
+                  <select id="settings-focus-duration">
+                    <option value="15">15 Minutes (Quick Sprint)</option>
+                    <option value="25" selected>25 Minutes (Standard Pomodoro)</option>
+                    <option value="30">30 Minutes</option>
+                    <option value="45">45 Minutes</option>
+                    <option value="60">60 Minutes (Deep Immersion)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="settings-break-duration">Default Break Duration</label>
+                  <select id="settings-break-duration">
+                    <option value="5" selected>5 Minutes (Standard Break)</option>
+                    <option value="10">10 Minutes (Longer Break)</option>
+                  </select>
+                </div>
+
+                <div class="form-group" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-top: 1px solid var(--border-subtle);">
+                  <div>
+                    <label class="form-label" for="settings-sound-toggle" style="margin: 0;">Synthesized Chime Sound</label>
+                    <div class="form-help">Play audio chime when focus or break sessions end</div>
+                  </div>
+                  <input type="checkbox" id="settings-sound-toggle" checked style="width: 22px; height: 22px; cursor: pointer;">
+                </div>
+
+                <div class="form-group" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-top: 1px solid var(--border-subtle);">
+                  <div>
+                    <label class="form-label" for="settings-notif-toggle" style="margin: 0;">Browser Alerts</label>
+                    <div class="form-help">Show in-app notification toasts</div>
+                  </div>
+                  <input type="checkbox" id="settings-notif-toggle" checked style="width: 22px; height: 22px; cursor: pointer;">
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg" style="margin-top: 14px; width: 100%;">
+                  Save Preferences
+                </button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- Mobile Bottom Navigation Bar (Docked) -->
+      <nav class="mobile-bottom-nav">
+        <button class="mobile-bottom-nav-item active" data-route="dashboard" type="button">
+          <span class="b-nav-icon">⌂</span>
+          <span class="b-nav-label">Dashboard</span>
+        </button>
+        <button class="mobile-bottom-nav-item" data-route="subjects" type="button">
+          <span class="b-nav-icon">📚</span>
+          <span class="b-nav-label">Subjects</span>
+        </button>
+        <button class="mobile-bottom-nav-item" data-route="planner" type="button">
+          <span class="b-nav-icon">📅</span>
+          <span class="b-nav-label">Planner</span>
+        </button>
+        <button class="mobile-bottom-nav-item" data-route="timer" type="button">
+          <span class="b-nav-icon">⏱️</span>
+          <span class="b-nav-label">Focus</span>
+        </button>
+        <button class="mobile-bottom-nav-item" id="mobile-more-btn" type="button">
+          <span class="b-nav-icon">•••</span>
+          <span class="b-nav-label">More</span>
+        </button>
+      </nav>
+
+      <!-- Mobile More Menu Sheet -->
+      <div class="mobile-more-sheet" id="mobile-more-sheet">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <span style="font-weight: 800; font-size: 0.95rem; color: var(--text-main);">More Academic Tools</span>
+          <button type="button" id="mobile-more-close" style="font-size: 1.1rem; color: var(--text-muted);">✕</button>
+        </div>
+        <div class="mobile-more-grid">
+          <div class="mobile-more-item" onclick="Router.navigate('exams'); document.getElementById('mobile-more-sheet').classList.remove('active');">
+            <span style="font-size: 1.4rem;">🏆</span>
+            <span>Exam Prep</span>
+          </div>
+          <div class="mobile-more-item" onclick="Router.navigate('revision'); document.getElementById('mobile-more-sheet').classList.remove('active');">
+            <span style="font-size: 1.4rem;">🔄</span>
+            <span>Revision</span>
+          </div>
+          <div class="mobile-more-item" onclick="Router.navigate('mocktest'); document.getElementById('mobile-more-sheet').classList.remove('active');">
+            <span style="font-size: 1.4rem;">🎯</span>
+            <span>Mock Tests</span>
+          </div>
+          <div class="mobile-more-item" onclick="Router.navigate('ai'); document.getElementById('mobile-more-sheet').classList.remove('active');">
+            <span style="font-size: 1.4rem;">🧠</span>
+            <span>AI Coach</span>
+          </div>
+          <div class="mobile-more-item" onclick="Router.navigate('analytics'); document.getElementById('mobile-more-sheet').classList.remove('active');">
+            <span style="font-size: 1.4rem;">📊</span>
+            <span>Analytics</span>
+          </div>
+          <div class="mobile-more-item" onclick="Router.navigate('resources'); document.getElementById('mobile-more-sheet').classList.remove('active');">
+            <span style="font-size: 1.4rem;">📑</span>
+            <span>Resources</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= MODALS ================= -->
+
+  <!-- Subject Modal -->
+  <div class="modal-overlay" id="modal-subject">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title" id="subject-modal-title">Add New Subject</h3>
+        <button class="modal-close" type="button">✕</button>
+      </div>
+      <form id="form-subject">
+        <div class="modal-body">
+          <input type="hidden" id="subject-modal-id">
+          
+          <div class="form-group">
+            <label class="form-label" for="subject-modal-name">Subject Name</label>
+            <input type="text" id="subject-modal-name" required placeholder="e.g. Computer Networks">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="subject-modal-color">Theme Color</label>
+            <select id="subject-modal-color">
+              <option value="#6C3BFF">Deep Violet (#6C3BFF)</option>
+              <option value="#8B5CF6">Electric Purple (#8B5CF6)</option>
+              <option value="#FF6B6B">Coral (#FF6B6B)</option>
+              <option value="#FF9F43">Warm Orange (#FF9F43)</option>
+              <option value="#06B6D4">Ocean Cyan (#06B6D4)</option>
+              <option value="#10B981">Emerald Green (#10B981)</option>
+              <option value="#EC4899">Rose Pink (#EC4899)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="subject-modal-desc">Description (Optional)</label>
+            <textarea id="subject-modal-desc" rows="2" placeholder="Course code, instructor, or key syllabus topics"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary modal-close">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Subject</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Planner Item Modal -->
+  <div class="modal-overlay" id="modal-planner-item">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">Add to Academic Schedule</h3>
+        <button class="modal-close" type="button">✕</button>
+      </div>
+      <form id="form-planner-item">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="planner-item-title">Title / Task Name</label>
+            <input type="text" id="planner-item-title" required placeholder="e.g. Solve Chapter 3 Exercises or Finish Lab Report">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div class="form-group">
+              <label class="form-label" for="planner-item-subject">Subject</label>
+              <select id="planner-item-subject">
+                <option value="">-- No Subject (General) --</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="planner-item-type">Item Type</label>
+              <select id="planner-item-type">
+                <option value="task">📝 Study Task</option>
+                <option value="assignment">📑 Assignment</option>
+                <option value="exam">🎯 Exam Target</option>
+                <option value="project">💻 Project</option>
+                <option value="revision">🔄 Revision</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label class="form-label" for="planner-item-priority">Priority</label>
+              <select id="planner-item-priority">
+                <option value="High">🔥 High</option>
+                <option value="Medium" selected>⚡ Medium</option>
+                <option value="Low">🌿 Low</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="planner-item-mins">Est. Time</label>
+              <input type="number" id="planner-item-mins" value="30" min="5" max="360">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="planner-item-deadline">Deadline</label>
+              <input type="date" id="planner-item-deadline">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="planner-item-desc">Notes / Instructions (Optional)</label>
+            <textarea id="planner-item-desc" rows="2" placeholder="Formulas, links, chapters"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary modal-close">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add to Schedule</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Plan My Day Modal -->
+  <div class="modal-overlay" id="modal-plan-my-day">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">⚡ AI Plan My Day Optimizer</h3>
+        <button class="modal-close" type="button">✕</button>
+      </div>
+      <form id="form-plan-my-day">
+        <div class="modal-body">
+          <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 16px;">
+            FocusFlow analyzes your pending tasks, deadlines, upcoming exams, and weak topics to build a realistic time-blocked study schedule with refreshing breaks.
+          </p>
+
+          <div class="form-group">
+            <label class="form-label" for="plan-day-hours">Available Study Time Today (Hours)</label>
+            <input type="number" id="plan-day-hours" value="2.5" min="0.5" max="12" step="0.5" required>
+          </div>
+
+          <div id="plan-day-result"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary modal-close">Close</button>
+          <button type="submit" id="btn-submit-plan-day" class="btn btn-primary">⚡ Optimize Schedule</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Exam Modal -->
+  <div class="modal-overlay" id="modal-exam">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">Schedule Academic Exam</h3>
+        <button class="modal-close" type="button">✕</button>
+      </div>
+      <form id="form-exam">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="exam-modal-subject">Subject</label>
+            <select id="exam-modal-subject" required>
+              <!-- Populated with subjects -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="exam-modal-title">Exam Title</label>
+            <input type="text" id="exam-modal-title" required placeholder="e.g. End Semester Theory Exam or Mid-term Test">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div class="form-group">
+              <label class="form-label" for="exam-modal-date">Exam Date</label>
+              <input type="date" id="exam-modal-date" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="exam-modal-target">Target Score (%)</label>
+              <input type="number" id="exam-modal-target" value="90" min="50" max="100">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="exam-modal-notes">Exam Notes / Key Topics (Optional)</label>
+            <textarea id="exam-modal-notes" rows="2" placeholder="e.g. Focus on Modules 3, 4 and numerical problems"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary modal-close">Cancel</button>
+          <button type="submit" class="btn btn-primary">Schedule &amp; Build Roadmap 🎯</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Manual Add Revision Modal -->
+  <div class="modal-overlay" id="modal-add-revision">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">Queue Topic for Revision</h3>
+        <button class="modal-close" type="button">✕</button>
+      </div>
+      <form id="form-add-revision">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="revision-modal-topic">Select Topic</label>
+            <select id="revision-modal-topic" required>
+              <!-- Populated -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="revision-modal-reason">Reason for Review</label>
+            <input type="text" id="revision-modal-reason" placeholder="e.g. Needs formula practice or confusing concepts" value="Student Flagged for Active Revision">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary modal-close">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add to Revision Queue</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Resource Modal -->
+  <div class="modal-overlay" id="modal-resource">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">Save Note / Study Resource</h3>
+        <button class="modal-close" type="button">✕</button>
+      </div>
+      <form id="form-resource">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="resource-modal-title">Resource Title</label>
+            <input type="text" id="resource-modal-title" required placeholder="e.g. Subnet Mask Cheat Sheet or Dijkstra Formula">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div class="form-group">
+              <label class="form-label" for="resource-modal-subject">Subject</label>
+              <select id="resource-modal-subject">
+                <option value="">-- No Subject (General) --</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="resource-modal-type">Resource Type</label>
+              <select id="resource-modal-type">
+                <option value="note">📝 Lecture Note</option>
+                <option value="formula">📐 Formula / Cheat Sheet</option>
+                <option value="link">🔗 Web / Video Link</option>
+                <option value="reminder">⏰ Academic Reminder</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="resource-modal-content">Content / Notes / Formula</label>
+            <textarea id="resource-modal-content" rows="4" required placeholder="Write or paste your formula, notes, or key points..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="resource-modal-url">URL / Reference Link (Optional)</label>
+            <input type="url" id="resource-modal-url" placeholder="https://...">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="resource-modal-tags">Tags (Comma-separated)</label>
+            <input type="text" id="resource-modal-tags" placeholder="e.g. subnetting, ip, formulas">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary modal-close">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save to Library</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Quick Capture Modal -->
+  <div class="modal-overlay" id="modal-quick-capture">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">⚡ Quick Capture</h3>
+        <button class="modal-close" type="button">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="qc-tabs">
+          <button type="button" class="qc-tab-btn active" data-tab="task">📝 Task</button>
+          <button type="button" class="qc-tab-btn" data-tab="topic">📖 Topic</button>
+          <button type="button" class="qc-tab-btn" data-tab="note">📑 Note</button>
+          <button type="button" class="qc-tab-btn" data-tab="exam">🎯 Exam</button>
+        </div>
+
+        <form id="form-quick-capture">
+          <!-- Task Panel -->
+          <div class="qc-panel" data-tab="task">
+            <div class="form-group">
+              <label class="form-label">Task Title</label>
+              <input type="text" id="qc-task-title" placeholder="What needs to get done?">
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div class="form-group">
+                <label class="form-label">Subject</label>
+                <select id="qc-task-subject" class="qc-subject-select"></select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Priority</label>
+                <select id="qc-task-priority">
+                  <option value="High">🔥 High</option>
+                  <option value="Medium" selected>⚡ Medium</option>
+                  <option value="Low">🌿 Low</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Est. Time (Minutes)</label>
+              <input type="number" id="qc-task-mins" value="25" min="5" max="360">
+            </div>
+          </div>
+
+          <!-- Topic Panel -->
+          <div class="qc-panel" data-tab="topic" style="display: none;">
+            <div class="form-group">
+              <label class="form-label">Subject</label>
+              <select id="qc-topic-subject" class="qc-subject-select"></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Topic Title</label>
+              <input type="text" id="qc-topic-title" placeholder="e.g. TCP Handshake or Binary Trees">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Chapter / Module</label>
+              <input type="text" id="qc-topic-chapter" placeholder="e.g. Unit 2: Transport Layer" value="General">
+            </div>
+          </div>
+
+          <!-- Note Panel -->
+          <div class="qc-panel" data-tab="note" style="display: none;">
+            <div class="form-group">
+              <label class="form-label">Note Title</label>
+              <input type="text" id="qc-note-title" placeholder="e.g. Quick Formula">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Subject</label>
+              <select id="qc-note-subject" class="qc-subject-select"></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Content</label>
+              <textarea id="qc-note-content" rows="3" placeholder="Paste notes, formula or reminder..."></textarea>
+            </div>
+          </div>
+
+          <!-- Exam Panel -->
+          <div class="qc-panel" data-tab="exam" style="display: none;">
+            <div class="form-group">
+              <label class="form-label">Exam Title</label>
+              <input type="text" id="qc-exam-title" placeholder="e.g. Midterm Test">
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div class="form-group">
+                <label class="form-label">Subject</label>
+                <select id="qc-exam-subject" class="qc-subject-select"></select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Exam Date</label>
+                <input type="date" id="qc-exam-date">
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer" style="padding: 16px 0 0 0; margin-top: 16px;">
+            <button type="button" class="btn btn-secondary modal-close">Cancel</button>
+            <button type="submit" class="btn btn-accent">⚡ Capture Instantly</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Global Search Modal -->
+  <div class="modal-overlay" id="modal-global-search">
+    <div class="modal-box" style="max-width: 620px;">
+      <div class="modal-header" style="border-bottom: none; padding-bottom: 0;">
+        <div style="display: flex; align-items: center; gap: 10px; width: 100%;">
+          <span style="font-size: 1.2rem;">🔍</span>
+          <input type="text" id="global-search-input" placeholder="Search subjects, topics, tasks, formulas, exams..." style="border: none; font-size: 1.1rem; padding: 6px 0; background: transparent; width: 100%;" autocomplete="off">
+        </div>
+        <button class="modal-close" type="button">✕</button>
+      </div>
+      <div class="modal-body" style="padding-top: 10px; max-height: 400px; overflow-y: auto;">
+        <div id="global-search-results">
+          <div style="text-align: center; padding: 24px; color: var(--text-muted);">
+            Type a subject, topic, formula, or task name...
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Onboarding Academic Workspace Setup Modal -->
+  <div class="modal-overlay" id="modal-onboarding">
+    <div class="modal-box" style="max-width: 640px;">
+      <div class="modal-header">
+        <div>
+          <span class="badge" style="background: rgba(108, 59, 255, 0.15); color: var(--primary-600); font-weight: 800; font-size: 0.75rem;">
+            STEP 1 OF 1 • ACADEMIC SETUP
+          </span>
+          <h3 class="modal-title" style="margin-top: 4px;">Set Up Your Academic Workspace</h3>
+        </div>
+        <button class="modal-close" type="button">✕</button>
+      </div>
+      <form id="form-onboarding">
+        <div class="modal-body">
+          <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 16px;">
+            Customize your FocusFlow workspace with your actual degree, semester, and subjects. No hardcoded or forced data!
+          </p>
+
+          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label class="form-label" for="onboard-course">Course / Degree / Class</label>
+              <input type="text" id="onboard-course" required placeholder="e.g. BSc IT, Computer Science, Class 12, MBBS">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="onboard-semester">Semester / Year</label>
+              <input type="text" id="onboard-semester" placeholder="e.g. Sem 4 or Year 2">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="onboard-institution">College / School / University (Optional)</label>
+            <input type="text" id="onboard-institution" placeholder="e.g. MIT, Stanford, Delhi University">
+          </div>
+
+          <!-- Unlimited Subjects Input -->
+          <div class="form-group">
+            <label class="form-label">Add Your Subjects (Unlimited)</label>
+            <div style="display: flex; gap: 8px;">
+              <input type="text" id="onboard-subject-input" placeholder="e.g. Computer Networks, Data Structures, Mathematics">
+              <button type="button" class="btn btn-secondary" id="btn-onboard-add-sub" style="white-space: nowrap;">
+                + Add
+              </button>
+            </div>
+            <div class="form-help">Type a subject and press Enter or click + Add.</div>
+
+            <!-- Chips Container -->
+            <div id="onboard-subjects-chips" style="margin-top: 10px; min-height: 40px; padding: 10px; background: var(--bg-muted); border-radius: var(--radius-sm); display: flex; flex-wrap: wrap; gap: 6px;">
+              <!-- Populated dynamically -->
+            </div>
+          </div>
+
+          <!-- Upcoming Exam Optional -->
+          <div style="background: var(--bg-muted); padding: 14px; border-radius: var(--radius-md); margin-top: 14px;">
+            <div style="font-weight: 800; font-size: 0.88rem; margin-bottom: 8px;">
+              🎯 Upcoming Exam (Optional)
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <input type="text" id="onboard-exam-title" placeholder="Exam Name (e.g. Midterms)">
+              <input type="date" id="onboard-exam-date">
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top: 14px;">
+            <label class="form-label" for="onboard-goal-mins">Daily Study Goal (Minutes)</label>
+            <select id="onboard-goal-mins">
+              <option value="30">30 Minutes (Gentle pace)</option>
+              <option value="45">45 Minutes</option>
+              <option value="60" selected>60 Minutes (Standard lock-in)</option>
+              <option value="90">90 Minutes (Deep study)</option>
+              <option value="120">120 Minutes (Hardcore)</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="btn-onboard-skip">Skip for Now</button>
+          <button type="submit" id="btn-onboard-submit" class="btn btn-primary btn-lg">Launch FocusFlow 🚀</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container"></div>
+
+  <!-- Application Scripts -->
+  <script src="/static/js/sound.js?v=20260930_genz"></script>
+  <script src="/static/js/api.js?v=20260930_genz"></script>
+  <script src="/static/js/auth.js?v=20260930_genz"></script>
+  <script src="/static/js/subjects_tasks.js?v=20260930_genz"></script>
+  <script src="/static/js/mock_test.js?v=20260930_genz"></script>
+  <script src="/static/js/dashboard.js?v=20260930_genz"></script>
+  <script src="/static/js/ai.js?v=20260930_genz"></script>
+  <script src="/static/js/timer.js?v=20260930_genz"></script>
+  <script src="/static/js/planner.js?v=20260930_genz"></script>
+  <script src="/static/js/exams.js?v=20260930_genz"></script>
+  <script src="/static/js/revision.js?v=20260930_genz"></script>
+  <script src="/static/js/resources.js?v=20260930_genz"></script>
+  <script src="/static/js/search_capture.js?v=20260930_genz"></script>
+  <script src="/static/js/onboarding.js?v=20260930_genz"></script>
+  <script src="/static/js/progress.js?v=20260930_genz"></script>
+  <script src="/static/js/settings.js?v=20260930_genz"></script>
+  <script src="/static/js/router.js?v=20260930_genz"></script>
+  <script src="/static/js/app.js?v=20260930_genz"></script>
+
+  <!-- Mobile bottom nav more trigger script -->
+  <script>
+    document.getElementById('mobile-more-btn')?.addEventListener('click', () => {
+      document.getElementById('mobile-more-sheet')?.classList.toggle('active');
+    });
+    document.getElementById('mobile-more-close')?.addEventListener('click', () => {
+      document.getElementById('mobile-more-sheet')?.classList.remove('active');
+    });
+  </script>
+</body>
+</html>

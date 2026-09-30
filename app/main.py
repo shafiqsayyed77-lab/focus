@@ -104,33 +104,45 @@ def api_dashboard_stats_alias(current_user: dict = Depends(get_current_user)):
 async def api_ai_study_plan_alias(request: AIPlannerRequest, current_user: dict = Depends(get_current_user)):
     return await ai_routes.generate_study_plan(request, current_user)
 
-# Page routes for direct browser navigation
-@app.get("/")
-@app.get("/dashboard")
-@app.get("/subjects")
-@app.get("/roadmap")
-@app.get("/planner")
-@app.get("/exams")
-@app.get("/revision")
-@app.get("/mocktest")
-@app.get("/timer")
-@app.get("/ai")
-@app.get("/analytics")
-@app.get("/progress")
-@app.get("/resources")
-@app.get("/profile")
-@app.get("/settings")
-@app.get("/login")
-@app.get("/signup")
+def _read_index_html() -> str:
+    candidates = [
+        BASE_DIR / "public" / "index.html",
+        BASE_DIR / "index.html",
+        STATIC_DIR / "index.html",
+        Path(__file__).resolve().parent.parent / "static" / "index.html"
+    ]
+    for p in candidates:
+        if p.exists():
+            try:
+                return p.read_text(encoding="utf-8")
+            except Exception:
+                pass
+    return "<!DOCTYPE html><html><head><title>FocusFlow</title></head><body><h1>FocusFlow is online.</h1></body></html>"
+
+# Primary SPA Entrypoints
+@app.get("/", response_class=HTMLResponse)
+@app.get("/index.html", response_class=HTMLResponse)
+@app.get("/api/index.py", response_class=HTMLResponse)
+@app.get("/api", response_class=HTMLResponse)
+@app.get("/api/", response_class=HTMLResponse)
+@app.get("/dashboard", response_class=HTMLResponse)
+@app.get("/subjects", response_class=HTMLResponse)
+@app.get("/roadmap", response_class=HTMLResponse)
+@app.get("/planner", response_class=HTMLResponse)
+@app.get("/exams", response_class=HTMLResponse)
+@app.get("/revision", response_class=HTMLResponse)
+@app.get("/mocktest", response_class=HTMLResponse)
+@app.get("/timer", response_class=HTMLResponse)
+@app.get("/ai", response_class=HTMLResponse)
+@app.get("/analytics", response_class=HTMLResponse)
+@app.get("/progress", response_class=HTMLResponse)
+@app.get("/resources", response_class=HTMLResponse)
+@app.get("/profile", response_class=HTMLResponse)
+@app.get("/settings", response_class=HTMLResponse)
+@app.get("/login", response_class=HTMLResponse)
+@app.get("/signup", response_class=HTMLResponse)
 async def serve_spa_page():
-    """Serves the primary Single Page Application interface."""
-    root_file = BASE_DIR / "index.html"
-    if root_file.exists():
-        return FileResponse(str(root_file))
-    index_file = STATIC_DIR / "index.html"
-    if index_file.exists():
-        return FileResponse(str(index_file))
-    return {"message": "FocusFlow API is online."}
+    return HTMLResponse(content=_read_index_html(), media_type="text/html")
 
 @app.get("/dev/auth-relay", response_class=HTMLResponse)
 def dev_auth_relay(token: str, redirect: str = "/#dashboard"):
@@ -146,5 +158,43 @@ def dev_auth_relay(token: str, redirect: str = "/#dashboard"):
 </html>""")
 
 @app.get("/health")
+@app.get("/api/health")
 def health_check():
     return {"status": "healthy", "app": "FocusFlow", "version": "2.0.0"}
+
+# Catch-all route: serves static assets or SPA frontend without ever throwing 404 for pages
+@app.get("/{full_path:path}")
+async def catch_all_spa_and_static(full_path: str):
+    # Static files fallback
+    if full_path.startswith("static/"):
+        rel_path = full_path[len("static/"):]
+        for base in [STATIC_DIR, BASE_DIR / "public" / "static", BASE_DIR / "static"]:
+            target = base / rel_path
+            if target.exists() and target.is_file():
+                ext = target.suffix.lower()
+                content_types = {
+                    ".css": "text/css; charset=utf-8",
+                    ".js": "application/javascript; charset=utf-8",
+                    ".json": "application/json; charset=utf-8",
+                    ".png": "image/png",
+                    ".jpg": "image/jpeg",
+                    ".jpeg": "image/jpeg",
+                    ".svg": "image/svg+xml",
+                    ".ico": "image/x-icon",
+                    ".wav": "audio/wav",
+                    ".mp3": "audio/mpeg",
+                    ".html": "text/html; charset=utf-8"
+                }
+                ct = content_types.get(ext, "application/octet-stream")
+                if ext in [".css", ".js", ".json", ".html", ".svg"]:
+                    return HTMLResponse(content=target.read_text(encoding="utf-8"), media_type=ct)
+                else:
+                    from fastapi.responses import Response
+                    return Response(content=target.read_bytes(), media_type=ct)
+
+    # API endpoints that do not exist return standard 404 JSON
+    if full_path.startswith("api/"):
+        return JSONResponse(status_code=404, content={"detail": f"API endpoint /{full_path} not found"})
+
+    # All frontend route variations return index.html
+    return HTMLResponse(content=_read_index_html(), media_type="text/html")

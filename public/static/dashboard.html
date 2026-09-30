@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FocusFlow — Student Dashboard</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+  <!-- SVG Gradient Definitions -->
+  <svg width="0" height="0" style="position: absolute;">
+    <defs>
+      <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#4f46e5" />
+        <stop offset="100%" stop-color="#f97316" />
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="app-sidebar" id="appSidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-logo">F</div>
+        <span class="sidebar-title">FocusFlow</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Workspace</div>
+        
+        <a class="nav-item active" id="navDashboard" data-view="dashboard">
+          <div class="nav-item-left">
+            <span class="nav-icon">📊</span>
+            <span>Dashboard</span>
+          </div>
+        </a>
+
+        <a class="nav-item" id="navTasks" data-view="tasks">
+          <div class="nav-item-left">
+            <span class="nav-icon">📚</span>
+            <span>Subjects & Tasks</span>
+          </div>
+          <span class="badge-tag badge-pending" id="sidebarPendingCount">0</span>
+        </a>
+
+        <a class="nav-item" id="navAi" data-view="ai">
+          <div class="nav-item-left">
+            <span class="nav-icon">🤖</span>
+            <span>AI Study Assistant</span>
+          </div>
+          <span class="badge-tag" style="background: rgba(249, 115, 22, 0.25); color: #fdba74; font-weight: 700;">AI</span>
+        </a>
+
+        <div class="nav-section-title" style="margin-top: 1rem;">Future Modules</div>
+
+        <a class="nav-item" id="navTimerStub">
+          <div class="nav-item-left">
+            <span class="nav-icon">⏱️</span>
+            <span>Focus Timer</span>
+          </div>
+          <span class="badge-tag badge-module">Module 5</span>
+        </a>
+      </nav>
+
+      <!-- Sidebar User Profile Footer -->
+      <div class="sidebar-user">
+        <div class="user-profile-info">
+          <div class="user-avatar" id="sidebarAvatar">ST</div>
+          <div class="user-details">
+            <span class="user-name" id="sidebarUserName">Student</span>
+            <span class="user-role" id="sidebarUserEmail">student@focusflow.edu</span>
+          </div>
+        </div>
+        <button type="button" class="btn-logout-icon" id="logoutBtn" title="Logout">
+          <span>🚪</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="app-main">
+      <!-- Top Header Bar -->
+      <header class="app-header">
+        <div class="header-left">
+          <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">☰</button>
+          <div class="header-title-container">
+            <h2 class="header-title" id="pageHeaderTitle">Student Dashboard</h2>
+            <span class="header-date" id="currentDateDisplay">Today</span>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <div class="streak-pill" id="headerStreakPill" title="Consecutive study days">
+            <span class="flame-icon">🔥</span>
+            <span id="streakCountText">5 Days Streak</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- View Containers -->
+      <main class="views-container">
+        
+        <!-- ================= VIEW 1: DASHBOARD (MODULE 2) ================= -->
+        <section id="view-dashboard" class="view-section active">
+          
+          <!-- Welcome Hero Banner -->
+          <div class="welcome-hero">
+            <div class="hero-text">
+              <h1 class="hero-greeting" id="heroGreeting">Welcome back, Student! 🎓</h1>
+              <p class="hero-subtext">
+                Track your study time, complete tasks across your subjects, and build your daily focus habits. You're set up for academic success today!
+              </p>
+            </div>
+            <div class="hero-actions">
+              <button type="button" class="hero-btn btn-focus-session" id="startFocusSessionBtn">
+                <span>⏱️</span>
+                <span>Start Focus Session</span>
+              </button>
+              <button type="button" class="hero-btn btn-ai-assistant" id="aiStudyAssistantBtn">
+                <span>✨</span>
+                <span>AI Study Assistant</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Key Metrics Grid -->
+          <div class="metrics-grid">
+            <!-- Metric 1: Study Time -->
+            <div class="stat-card">
+              <div class="stat-info">
+                <span class="stat-label">Today's Study Time</span>
+                <span class="stat-value" id="statStudyTime">2h 45m</span>
+                <span class="stat-subtitle">Daily target: 4h 00m</span>
+              </div>
+              <div class="stat-icon-wrapper stat-icon-violet">
+                <span>⏱️</span>
+              </div>
+            </div>
+
+            <!-- Metric 2: Tasks Completed Today -->
+            <div class="stat-card">
+              <div class="stat-info">
+                <span class="stat-label">Tasks Completed</span>
+                <span class="stat-value" id="statTasksRatio">3 / 6</span>
+                <span class="stat-subtitle" id="statTasksPending">3 remaining</span>
+              </div>
+              <div class="stat-icon-wrapper stat-icon-coral">
+                <span>✅</span>
+              </div>
+            </div>
+
+            <!-- Metric 3: Current Study Streak -->
+            <div class="stat-card">
+              <div class="stat-info">
+                <span class="stat-label">Current Streak</span>
+                <span class="stat-value" id="statStreakDays">5 Days</span>
+                <span class="stat-subtitle">Consistent habit building 🔥</span>
+              </div>
+              <div class="stat-icon-wrapper stat-icon-amber">
+                <span>🔥</span>
+              </div>
+            </div>
+
+            <!-- Metric 4: Progress Indicator Gauge -->
+            <div class="stat-card progress-stat-card">
+              <div class="stat-info">
+                <span class="stat-label">Goal Progress</span>
+                <span class="stat-value" id="statProgressPercent">50%</span>
+                <span class="stat-subtitle">Completion rate</span>
+              </div>
+              <div class="progress-circle-wrap">
+                <svg class="progress-circle-svg" viewBox="0 0 64 64">
+                  <circle class="progress-circle-bg" cx="32" cy="32" r="27"></circle>
+                  <circle class="progress-circle-fill" id="dashboardProgressRing" cx="32" cy="32" r="27"></circle>
+                </svg>
+                <div class="progress-text-center" id="dashboardProgressLabel">50%</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dashboard Content: Two Columns -->
+          <div class="dashboard-columns">
+            <!-- Left: Today's Tasks -->
+            <div class="content-card">
+              <div class="card-header-row">
+                <h3 class="card-heading">
+                  <span>📅</span>
+                  <span>Today's Study Tasks</span>
+                </h3>
+                <span class="card-action-link" id="dashViewAllTasksBtn">
+                  <span>View all</span>
+                  <span>→</span>
+                </span>
+              </div>
+
+              <div id="dashTodayTasksList" class="tasks-list">
+                <!-- Dynamically loaded today's tasks -->
+              </div>
+            </div>
+
+            <!-- Right: Subject Progress Overview -->
+            <div class="content-card">
+              <div class="card-header-row">
+                <h3 class="card-heading">
+                  <span>📚</span>
+                  <span>Subjects Progress</span>
+                </h3>
+                <span class="card-action-link" id="dashManageSubjectsBtn">
+                  <span>Manage</span>
+                  <span>→</span>
+                </span>
+              </div>
+
+              <div id="dashSubjectSummaryList" class="subject-summary-list">
+                <!-- Dynamically loaded subjects with mini progress bars -->
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ================= VIEW 2: SUBJECTS & TASKS (MODULE 3) ================= -->
+        <section id="view-tasks" class="view-section">
+          
+          <!-- Section Toolbar -->
+          <div class="section-toolbar">
+            <div>
+              <h1 class="toolbar-heading">Subjects & Study Tasks</h1>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                Organize your academic curriculum, track deliverables, and manage priorities.
+              </p>
+            </div>
+            <div class="toolbar-actions">
+              <button type="button" class="btn-secondary" id="openAddSubjectBtn">
+                <span>+</span>
+                <span>Add Subject</span>
+              </button>
+              <button type="button" class="btn-primary btn-coral" id="openAddTaskBtn">
+                <span>+</span>
+                <span>Add Study Task</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Subjects Shelf -->
+          <div class="subjects-shelf-header">
+            <h3 class="card-heading">
+              <span>📖</span>
+              <span>Your Subjects (<span id="subjectsCount">0</span>)</span>
+            </h3>
+          </div>
+
+          <div class="subjects-grid" id="subjectsGrid">
+            <!-- Dynamically populated subjects cards -->
+          </div>
+
+          <!-- Tasks Management Section -->
+          <div class="tasks-control-bar">
+            <!-- Filter Tabs -->
+            <div class="tabs-nav">
+              <button type="button" class="tab-btn active" data-tab="all" id="tabAll">
+                All Tasks (<span id="tabCountAll">0</span>)
+              </button>
+              <button type="button" class="tab-btn" data-tab="pending" id="tabPending">
+                Pending (<span id="tabCountPending">0</span>)
+              </button>
+              <button type="button" class="tab-btn" data-tab="completed" id="tabCompleted">
+                Completed (<span id="tabCountCompleted">0</span>)
+              </button>
+            </div>
+
+            <!-- Subject & Priority Filters -->
+            <div class="filters-group">
+              <select id="filterSubjectSelect" class="select-filter" aria-label="Filter by subject">
+                <option value="">All Subjects</option>
+              </select>
+
+              <select id="filterPrioritySelect" class="select-filter" aria-label="Filter by priority">
+                <option value="">All Priorities</option>
+                <option value="High">High Priority</option>
+                <option value="Medium">Medium Priority</option>
+                <option value="Low">Low Priority</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Dual Tasks Sections: Pending and Completed separately -->
+          <div class="tasks-sections-dual">
+            
+            <!-- Pending Tasks Block -->
+            <div class="task-section-block" id="blockPendingTasks">
+              <div class="section-block-title">
+                <span>⏳</span>
+                <span>Pending Tasks</span>
+                <span class="section-count-badge badge-pending" id="badgePendingCount">0</span>
+              </div>
+              <div id="pendingTasksList" class="tasks-list">
+                <!-- Dynamically populated pending tasks -->
+              </div>
+            </div>
+
+            <!-- Completed Tasks Block -->
+            <div class="task-section-block" id="blockCompletedTasks">
+              <div class="section-block-title">
+                <span>🎉</span>
+                <span>Completed Tasks</span>
+                <span class="section-count-badge badge-completed" id="badgeCompletedCount">0</span>
+              </div>
+              <div id="completedTasksList" class="tasks-list">
+                <!-- Dynamically populated completed tasks -->
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- ================= VIEW 3: AI STUDY ASSISTANT (MODULE 4) ================= -->
+        <section id="view-ai" class="view-section">
+          
+          <!-- AI Header Card -->
+          <div class="ai-header-card">
+            <div>
+              <div class="ai-badge-live" style="margin-bottom: 0.75rem;">
+                <span class="ai-badge-dot"></span>
+                <span id="aiStatusPillText">AI Study Engine Active</span>
+              </div>
+              <h1 style="font-size: 1.85rem; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 0.4rem;">
+                AI Study Assistant ✨
+              </h1>
+              <p style="color: #e0e7ff; font-size: 0.95rem; max-width: 650px;">
+                Accelerate your university learning with adaptive study planning, crystal-clear conceptual explanations, and interactive practice quizzes.
+              </p>
+            </div>
+            <div>
+              <span style="font-size: 3rem;">🤖</span>
+            </div>
+          </div>
+
+          <!-- Feature Sub-navigation Tabs -->
+          <div class="ai-tabs-container">
+            <div class="ai-nav-tab active" data-ai-tab="planner" id="tabAiPlanner">
+              <div class="ai-nav-icon">📋</div>
+              <div>
+                <span class="ai-nav-title">1. Study Planner</span>
+                <span class="ai-nav-subtext">Time-blocked study schedule</span>
+              </div>
+            </div>
+
+            <div class="ai-nav-tab" data-ai-tab="explain" id="tabAiExplain">
+              <div class="ai-nav-icon">💡</div>
+              <div>
+                <span class="ai-nav-title">2. Explain a Topic</span>
+                <span class="ai-nav-subtext">Intuitive student explanations</span>
+              </div>
+            </div>
+
+            <div class="ai-nav-tab" data-ai-tab="quiz" id="tabAiQuiz">
+              <div class="ai-nav-icon">📝</div>
+              <div>
+                <span class="ai-nav-title">3. Generate Quiz</span>
+                <span class="ai-nav-subtext">Interactive MCQs & test prep</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- PANE 1: AI Study Planner -->
+          <div class="ai-pane active" id="paneAiPlanner">
+            <div class="ai-grid-split">
+              <!-- Left Form Card -->
+              <div class="content-card">
+                <h3 class="card-heading" style="margin-bottom: 1.25rem;">
+                  <span>📋</span>
+                  <span>Configure Study Plan</span>
+                </h3>
+
+                <form id="studyPlanForm">
+                  <div class="form-group">
+                    <label class="form-label" for="planSubject">Subject *</label>
+                    <select id="planSubject" class="form-input" required>
+                      <option value="">Select a subject...</option>
+                    </select>
+                    <input type="text" id="planSubjectCustom" class="form-input" placeholder="Or type subject name..." style="margin-top: 0.5rem; display: none;">
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="planTopics">Topics to Study *</label>
+                    <textarea id="planTopics" class="form-input" rows="3" placeholder="e.g. IPv4, ARP, IPv6" required></textarea>
+                    <div class="quick-chips-wrap">
+                      <span class="quick-chip" data-set-topics="IPv4, ARP, IPv6" data-set-subj="Computer Networks">IPv4, ARP, IPv6</span>
+                      <span class="quick-chip" data-set-topics="Binary Search Tree, AVL Tree, Red-Black Tree" data-set-subj="Data Structures & Algorithms">BST & AVL Trees</span>
+                      <span class="quick-chip" data-set-topics="SQL Joins, Normalization 3NF, ACID Properties" data-set-subj="Database Management Systems">SQL & Normalization</span>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="planTime">Available Study Time</label>
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                      <input type="number" id="planTime" class="form-input" value="60" min="15" max="480" step="5" required style="max-width: 140px;">
+                      <span style="font-weight: 600; color: var(--text-secondary); font-size: 0.9rem;">Minutes</span>
+                    </div>
+                    <div class="quick-chips-wrap">
+                      <span class="quick-chip" data-set-time="30">30 mins</span>
+                      <span class="quick-chip" data-set-time="45">45 mins</span>
+                      <span class="quick-chip" data-set-time="60">60 mins (1h)</span>
+                      <span class="quick-chip" data-set-time="90">90 mins (1.5h)</span>
+                      <span class="quick-chip" data-set-time="120">120 mins (2h)</span>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Energy Level</label>
+                    <div class="energy-pills-grid" id="energyPillsGrid">
+                      <div class="energy-pill" data-energy="Low">
+                        <span>🔋</span> <span>Low Energy</span>
+                      </div>
+                      <div class="energy-pill selected" data-energy="Normal">
+                        <span>⚡</span> <span>Normal</span>
+                      </div>
+                      <div class="energy-pill" data-energy="Good">
+                        <span>🚀</span> <span>Good Energy</span>
+                      </div>
+                      <div class="energy-pill" data-energy="Highly Focused">
+                        <span>🔥</span> <span>Highly Focused</span>
+                      </div>
+                    </div>
+                    <input type="hidden" id="planEnergy" value="Normal">
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="planPriority">Priority</label>
+                    <select id="planPriority" class="form-input">
+                      <option value="Low">Low Priority</option>
+                      <option value="Medium" selected>Medium Priority</option>
+                      <option value="High">High Priority</option>
+                    </select>
+                  </div>
+
+                  <button type="submit" class="btn-primary btn-coral" id="btnGeneratePlan" style="margin-top: 1rem;">
+                    <span>✨ Generate Study Plan</span>
+                  </button>
+                </form>
+              </div>
+
+              <!-- Right Results Card -->
+              <div>
+                <div class="ai-loading-box" id="planLoadingBox">
+                  <div class="ai-spinner"></div>
+                  <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.35rem;">Creating Your Study Plan...</h4>
+                  <p style="font-size: 0.85rem; color: var(--text-secondary);">Structuring time blocks based on your energy level and topics.</p>
+                </div>
+
+                <div id="planResultContainer">
+                  <div class="study-plan-card">
+                    <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">
+                      <div>
+                        <span class="badge-tag" style="background: #ede9fe; color: #6d28d9; margin-bottom: 0.4rem; display: inline-block;">Ready to Study</span>
+                        <h3 class="card-heading" id="planResultHeading">Study Plan Output</h3>
+                      </div>
+                      <button type="button" class="btn-secondary" id="savePlanAsTasksBtn" style="font-size: 0.82rem; padding: 0.5rem 0.85rem; display: none;">
+                        <span>+ Save Items as Tasks</span>
+                      </button>
+                    </div>
+
+                    <div class="plan-timeline" id="planTimelineList">
+                      <div class="empty-state">
+                        <div class="empty-icon">📋</div>
+                        <div class="empty-title">No plan generated yet</div>
+                        <p class="empty-desc">Enter your subject, topics, and available time on the left, then click "Generate Study Plan".</p>
+                      </div>
+                    </div>
+
+                    <div id="planTipsCard" style="margin-top: 1.5rem; background: #fffbeb; border: 1px solid #fef3c7; border-radius: var(--radius-md); padding: 1rem; display: none;">
+                      <strong style="color: #b45309; font-size: 0.85rem; display: block; margin-bottom: 0.35rem;">💡 Recommended Study Strategy:</strong>
+                      <ul id="planTipsList" style="padding-left: 1.25rem; font-size: 0.84rem; color: #92400e; line-height: 1.5;"></ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PANE 2: AI Explain a Topic -->
+          <div class="ai-pane" id="paneAiExplain">
+            <div class="ai-grid-split">
+              <!-- Left Form Card -->
+              <div class="content-card">
+                <h3 class="card-heading" style="margin-bottom: 1.25rem;">
+                  <span>💡</span>
+                  <span>Explain a Topic</span>
+                </h3>
+
+                <form id="explainForm">
+                  <div class="form-group">
+                    <label class="form-label" for="explainTopicInput">Topic Name *</label>
+                    <input type="text" id="explainTopicInput" class="form-input" placeholder="e.g. Address Resolution Protocol (ARP)" required>
+                    <div class="quick-chips-wrap">
+                      <span class="quick-chip" data-explain-topic="Address Resolution Protocol (ARP)" data-explain-subj="Computer Networks">ARP</span>
+                      <span class="quick-chip" data-explain-topic="IPv4 Addressing & Subnets" data-explain-subj="Computer Networks">IPv4 Subnetting</span>
+                      <span class="quick-chip" data-explain-topic="Binary Search Tree" data-explain-subj="Data Structures & Algorithms">Binary Search Tree</span>
+                      <span class="quick-chip" data-explain-topic="TCP 3-Way Handshake" data-explain-subj="Computer Networks">TCP 3-Way Handshake</span>
+                      <span class="quick-chip" data-explain-topic="IPv6 (Internet Protocol v6)" data-explain-subj="Computer Networks">IPv6</span>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="explainSubjectSelect">Context / Subject (Optional)</label>
+                    <select id="explainSubjectSelect" class="form-input">
+                      <option value="">General Computer Science</option>
+                    </select>
+                  </div>
+
+                  <button type="submit" class="btn-primary" id="btnExplainTopic" style="margin-top: 1rem;">
+                    <span>💡 Explain Topic</span>
+                  </button>
+                </form>
+              </div>
+
+              <!-- Right Results Card -->
+              <div>
+                <div class="ai-loading-box" id="explainLoadingBox">
+                  <div class="ai-spinner"></div>
+                  <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.35rem;">Synthesizing Explanation...</h4>
+                  <p style="font-size: 0.85rem; color: var(--text-secondary);">Breaking down key principles, analogies, and practical examples.</p>
+                </div>
+
+                <div id="explainResultContainer">
+                  <div class="explain-result-card">
+                    <h3 class="card-heading" id="explainResultTitle">Topic Explanation</h3>
+
+                    <div id="explainPlaceholder" class="empty-state">
+                      <div class="empty-icon">💡</div>
+                      <div class="empty-title">Enter a topic to explain</div>
+                      <p class="empty-desc">The AI will generate a simple explanation, important points, and a small concrete example.</p>
+                    </div>
+
+                    <div id="explainContentWrap" style="display: none;">
+                      <div class="explain-simple-box" id="explainSimpleText"></div>
+
+                      <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin-top: 1.25rem;">
+                        Key Points to Remember:
+                      </h4>
+                      <div class="points-list" id="explainPointsList"></div>
+
+                      <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin-top: 1.25rem; margin-bottom: 0.65rem;">
+                        Practical Example / Walkthrough:
+                      </h4>
+                      <pre class="example-box" id="explainExampleCode"></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PANE 3: AI Generate Quiz -->
+          <div class="ai-pane" id="paneAiQuiz">
+            <div class="ai-grid-split">
+              <!-- Left Form Card -->
+              <div class="content-card">
+                <h3 class="card-heading" style="margin-bottom: 1.25rem;">
+                  <span>📝</span>
+                  <span>Generate Quiz</span>
+                </h3>
+
+                <form id="quizForm">
+                  <div class="form-group">
+                    <label class="form-label" for="quizSubjectSelect">Subject *</label>
+                    <select id="quizSubjectSelect" class="form-input" required>
+                      <option value="">Select a subject...</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="quizTopicInput">Topic *</label>
+                    <input type="text" id="quizTopicInput" class="form-input" placeholder="e.g. IPv4, ARP, Binary Search Tree" required>
+                    <div class="quick-chips-wrap">
+                      <span class="quick-chip" data-quiz-topic="IPv4" data-quiz-subj="Computer Networks">IPv4 Quiz</span>
+                      <span class="quick-chip" data-quiz-topic="ARP" data-quiz-subj="Computer Networks">ARP Quiz</span>
+                      <span class="quick-chip" data-quiz-topic="Binary Search Tree" data-quiz-subj="Data Structures & Algorithms">BST Quiz</span>
+                      <span class="quick-chip" data-quiz-topic="IPv6" data-quiz-subj="Computer Networks">IPv6 Quiz</span>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="quizCountSelect">Number of Questions</label>
+                    <select id="quizCountSelect" class="form-input">
+                      <option value="3">3 Questions (Quick check)</option>
+                      <option value="4" selected>4 Questions (Standard review)</option>
+                      <option value="5">5 Questions (Deep check)</option>
+                    </select>
+                  </div>
+
+                  <button type="submit" class="btn-primary btn-coral" id="btnGenerateQuiz" style="margin-top: 1rem;">
+                    <span>📝 Generate Quiz</span>
+                  </button>
+                </form>
+              </div>
+
+              <!-- Right Results Card -->
+              <div>
+                <div class="ai-loading-box" id="quizLoadingBox">
+                  <div class="ai-spinner"></div>
+                  <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.35rem;">Generating Multiple-Choice Quiz...</h4>
+                  <p style="font-size: 0.85rem; color: var(--text-secondary);">Creating realistic questions, answer choices, and clear explanations.</p>
+                </div>
+
+                <div id="quizResultContainer">
+                  <div id="quizPlaceholder" class="content-card empty-state">
+                    <div class="empty-icon">📝</div>
+                    <div class="empty-title">Ready to test your knowledge?</div>
+                    <p class="empty-desc">Choose a subject and topic on the left to generate self-assessing practice questions.</p>
+                  </div>
+
+                  <div id="quizRunnerWrap" style="display: none;" class="quiz-runner-container">
+                    <div class="quiz-score-header">
+                      <div class="quiz-score-text" id="quizScoreText">Answer the questions below to test your recall</div>
+                      <button type="button" class="btn-secondary" id="btnRetakeQuiz" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">
+                        <span>↺ Reset Answers</span>
+                      </button>
+                    </div>
+
+                    <div id="quizQuestionsList" style="display: flex; flex-direction: column; gap: 1.25rem;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ================= MODALS ================= -->
+
+  <!-- Modal 1: Add/Edit Subject -->
+  <div class="modal-backdrop" id="subjectModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title" id="subjectModalTitle">Add New Subject</h3>
+        <button type="button" class="modal-close-btn" data-close-modal="subjectModal">&times;</button>
+      </div>
+      <form id="subjectForm">
+        <input type="hidden" id="subjectId">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="subjectName">Subject Name *</label>
+            <input type="text" id="subjectName" class="form-input" placeholder="e.g. Distributed Computing" required>
+            <div id="subjectNameError" class="error-text">Subject name is required.</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="subjectCode">Course Code / Acronym (Optional)</label>
+            <input type="text" id="subjectCode" class="form-input" placeholder="e.g. CS-401">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Subject Color Theme</label>
+            <div class="color-picker-palette" id="colorPickerPalette">
+              <div class="color-option selected" data-color="#6366f1" style="background: #6366f1;"></div>
+              <div class="color-option" data-color="#4f46e5" style="background: #4f46e5;"></div>
+              <div class="color-option" data-color="#f97316" style="background: #f97316;"></div>
+              <div class="color-option" data-color="#10b981" style="background: #10b981;"></div>
+              <div class="color-option" data-color="#8b5cf6" style="background: #8b5cf6;"></div>
+              <div class="color-option" data-color="#f43f5e" style="background: #f43f5e;"></div>
+            </div>
+            <input type="hidden" id="subjectColor" value="#6366f1">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="subjectDescription">Description / Syllabus Notes</label>
+            <textarea id="subjectDescription" class="form-input" rows="3" placeholder="Brief outline of syllabus, labs, and exam focus..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" data-close-modal="subjectModal">Cancel</button>
+          <button type="submit" class="btn-primary" style="width: auto;" id="saveSubjectBtn">Save Subject</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 2: Add/Edit Task -->
+  <div class="modal-backdrop" id="taskModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title" id="taskModalTitle">Add Study Task</h3>
+        <button type="button" class="modal-close-btn" data-close-modal="taskModal">&times;</button>
+      </div>
+      <form id="taskForm">
+        <input type="hidden" id="taskId">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="taskTitle">Task Title *</label>
+            <input type="text" id="taskTitle" class="form-input" placeholder="e.g. Read chapter 4 and solve practice questions" required>
+            <div id="taskTitleError" class="error-text">Task title is required.</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="taskSubject">Subject *</label>
+            <select id="taskSubject" class="form-input" required>
+              <option value="">Select a subject...</option>
+            </select>
+            <div id="taskSubjectError" class="error-text">Please select a subject.</div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label" for="taskPriority">Priority Level</label>
+              <select id="taskPriority" class="form-input">
+                <option value="Low">Low</option>
+                <option value="Medium" selected>Medium</option>
+                <option value="High">High Priority</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="taskDueDate">Due Date</label>
+              <input type="date" id="taskDueDate" class="form-input">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="taskDescription">Task Notes & Details</label>
+            <textarea id="taskDescription" class="form-input" rows="3" placeholder="Key pointers, textbook references, deliverables..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" data-close-modal="taskModal">Cancel</button>
+          <button type="submit" class="btn-primary btn-coral" style="width: auto;" id="saveTaskBtn">Save Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 3: Confirmation Dialog (Delete) -->
+  <div class="modal-backdrop" id="deleteConfirmModal">
+    <div class="modal-dialog" style="max-width: 420px;">
+      <div class="modal-header">
+        <h3 class="modal-title" id="deleteModalTitle">Confirm Deletion</h3>
+        <button type="button" class="modal-close-btn" data-close-modal="deleteConfirmModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p id="deleteModalMessage" style="font-size: 0.95rem; color: var(--text-secondary);">
+          Are you sure you want to delete this item? This action cannot be undone.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" data-close-modal="deleteConfirmModal">Cancel</button>
+        <button type="button" class="btn-primary" style="background: #ef4444; width: auto;" id="confirmDeleteBtn">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/dashboard.js"></script>
+</body>
+</html>
