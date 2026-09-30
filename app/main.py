@@ -1,4 +1,5 @@
 import os
+import urllib.parse
 from pathlib import Path
 from fastapi import FastAPI, Request, Depends
 from fastapi.responses import FileResponse, JSONResponse, HTMLResponse
@@ -30,8 +31,58 @@ STATIC_DIR = BASE_DIR / "static"
 app = FastAPI(
     title="FocusFlow - Academic Productivity & Study Operating System",
     description="Professional full-stack productivity, roadmap, and examination preparation system for students.",
-    version="2.0.0"
+    version="2.0.0",
+    redirect_slashes=False
 )
+
+class VercelPathRewriteASGI:
+    """
+    ASGI middleware ensuring Vercel rewrites preserve the target subpath
+    (e.g. /api/auth/login) in the ASGI scope instead of /api/index.py.
+    """
+    def __init__(self, inner_app):
+        self.inner_app = inner_app
+
+    async def __call__(self, scope, receive, send):
+        if scope.get("type") == "http":
+            path = scope.get("path", "")
+            qs = scope.get("query_string", b"").decode("utf-8", errors="ignore")
+            params = urllib.parse.parse_qs(qs)
+
+            real_path = None
+            if "__vercel_path__" in params and params["__vercel_path__"]:
+                real_path = params["__vercel_path__"][0]
+                del params["__vercel_path__"]
+                new_qs = urllib.parse.urlencode(params, doseq=True)
+                scope["query_string"] = new_qs.encode("utf-8")
+
+            if not real_path:
+                headers = dict(scope.get("headers", []))
+                for h in [b"x-matched-path", b"x-vercel-matched-path", b"x-forwarded-uri"]:
+                    val = headers.get(h, b"").decode("utf-8", errors="ignore")
+                    if val and val.startswith("/api"):
+                        real_path = val
+                        break
+
+            if real_path:
+                if "?" in real_path:
+                    real_path, _ = real_path.split("?", 1)
+                if not real_path.startswith("/"):
+                    real_path = "/" + real_path
+                if not real_path.startswith("/api"):
+                    real_path = "/api" + real_path
+                if len(real_path) > 1 and real_path.endswith("/"):
+                    real_path = real_path.rstrip("/")
+                scope["path"] = real_path
+                scope["raw_path"] = real_path.encode("utf-8")
+            elif path in ["/api/index.py", "/api/index.py/"]:
+                scope["path"] = "/api/health"
+                scope["raw_path"] = b"/api/health"
+
+        await self.inner_app(scope, receive, send)
+
+# Add Vercel path rewrite middleware
+app.add_middleware(VercelPathRewriteASGI)
 
 # Enable CORS
 app.add_middleware(
@@ -122,9 +173,6 @@ def _read_index_html() -> str:
 # Primary SPA Entrypoints
 @app.get("/", response_class=HTMLResponse)
 @app.get("/index.html", response_class=HTMLResponse)
-@app.get("/api/index.py", response_class=HTMLResponse)
-@app.get("/api", response_class=HTMLResponse)
-@app.get("/api/", response_class=HTMLResponse)
 @app.get("/dashboard", response_class=HTMLResponse)
 @app.get("/subjects", response_class=HTMLResponse)
 @app.get("/roadmap", response_class=HTMLResponse)
@@ -159,8 +207,15 @@ def dev_auth_relay(token: str, redirect: str = "/#dashboard"):
 
 @app.get("/health")
 @app.get("/api/health")
+@app.get("/api")
+@app.get("/api/")
 def health_check():
-    return {"status": "healthy", "app": "FocusFlow", "version": "2.0.0"}
+    return {
+        "status": "healthy",
+        "app": "FocusFlow",
+        "version": "2.0.0",
+        "message": "FocusFlow Academic Productivity API is operational"
+    }
 
 # Catch-all route: serves static assets or SPA frontend without ever throwing 404 for pages
 @app.get("/{full_path:path}")
