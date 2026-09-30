@@ -76,18 +76,24 @@ app.include_router(search_routes.router)
 app.include_router(stats_routes.router)
 app.include_router(ai_routes.router)
 
-# Mount static assets
-if not STATIC_DIR.exists():
-    STATIC_DIR.mkdir(parents=True, exist_ok=True)
+# Mount static assets safely (without attempting to mkdir in read-only environments)
+if STATIC_DIR.exists():
+    app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
-app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
-
-# Ensure database schema is initialized on boot
-init_db()
+# Initialize database schema safely
+try:
+    init_db()
+except Exception as e:
+    import logging
+    logging.getLogger(__name__).warning(f"Database initialization deferred: {e}")
 
 @app.on_event("startup")
 def on_startup():
-    init_db()
+    try:
+        init_db()
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).warning(f"Startup database initialization error: {e}")
 
 # Compatibility Aliases
 @app.get("/api/dashboard/stats", response_model=DashboardStatsResponse, tags=["Dashboard & Stats"])
@@ -118,10 +124,13 @@ async def api_ai_study_plan_alias(request: AIPlannerRequest, current_user: dict 
 @app.get("/signup")
 async def serve_spa_page():
     """Serves the primary Single Page Application interface."""
+    root_file = BASE_DIR / "index.html"
+    if root_file.exists():
+        return FileResponse(str(root_file))
     index_file = STATIC_DIR / "index.html"
     if index_file.exists():
         return FileResponse(str(index_file))
-    return {"message": "FocusFlow API is online. Please ensure index.html exists in static directory."}
+    return {"message": "FocusFlow API is online."}
 
 @app.get("/dev/auth-relay", response_class=HTMLResponse)
 def dev_auth_relay(token: str, redirect: str = "/#dashboard"):
